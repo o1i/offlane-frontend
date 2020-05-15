@@ -11,7 +11,7 @@ const useStyles = makeStyles({
 
   },
   row: {
-    minWidth: 750,
+    minWidth: 500,
   },
   header: {
     height: 50,
@@ -23,13 +23,12 @@ export const SusPage = ({slotRows, kws}: {slotRows: SlotRow[], kws: Kw[]}) => {
 
   return (
     <Grid container direction="column" justify="flex-start" 
-          alignItems="stretch" spacing={0} className={classes.row}>
+          alignItems="stretch" spacing={1} className={classes.row}>
         <Grid item className={classes.header}>
-            <Grid container direction="row" justify="flex-start" 
-                  alignItems="stretch" spacing={1}>
+            <Grid container direction="row" justify="flex-start" spacing={1} wrap="nowrap">
                 <Grid item xs={1}></Grid>
                 {kws.map((oneInstance, key) => 
-                <Grid item key={key} xs={3}>
+                <Grid item key={key} xs={4}>
                     <KwItem kw={oneInstance}/>
                 </Grid>
                 )}

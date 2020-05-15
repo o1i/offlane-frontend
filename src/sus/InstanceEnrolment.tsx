@@ -29,7 +29,6 @@ const useStyles = makeStyles({
     "color": "#bbbbbb"
   },
   fach: {
-    float: "left",
     fontSize: 18,
   },
   lock: {
@@ -41,15 +40,15 @@ const useStyles = makeStyles({
   lehrer: {
     fontSize: 12,
     width: "49%",
-    float: "left",
   },
   ort: {
     fontSize: 12,
     width: "49%",
-    float: "right",
+    "background-color": "#777777"
   },
-  foo: {
+  content: {
     "padding": "5px",
+    "background-color": "#888888"
   },
 });
 
@@ -59,17 +58,19 @@ export const InstanceEnrolment = ({name, lehrer, ort, status}: LbInstance) => {
 
   return (
     <Card className={`${classes.root} ${classes[status]}`}>
-      <CardContent className={classes.foo}>
+      <CardContent className={classes.content}>
         <div>
           <Typography className={classes.lock}><FontAwesomeIcon icon={locked ? faLock : faLockOpen} /></Typography>
         </div>
         <div>
           <Typography className={`classes.fach ${status}`} gutterBottom>{name}</Typography>
         </div>
-        <div>
+        {lehrer && <div>
           <Typography className={classes.lehrer}>{lehrer}</Typography>
+        </div>}
+        {ort && <div>
           <Typography className={classes.ort}>{ort}</Typography>
-        </div>
+        </div>}
       </CardContent>
     </Card>
   );
