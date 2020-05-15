@@ -22,20 +22,17 @@ export const SusPage = ({slotRows, kws}: {slotRows: SlotRow[], kws: Kw[]}) => {
   const classes = useStyles();
 
   return (
-    <Grid container direction="column" justify="flex-start" 
-          alignItems="stretch" spacing={1} className={classes.row}>
-        <Grid item className={classes.header}>
-            <Grid container direction="row" justify="flex-start" spacing={1} wrap="nowrap">
-                <Grid item xs={1}></Grid>
-                {kws.map((oneInstance, key) => 
-                <Grid item key={key} xs={4}>
-                    <KwItem kw={oneInstance}/>
-                </Grid>
-                )}
-            </Grid>
-        </Grid>
-        {slotRows.map((oneInstance, key) => 
-        <Grid item ><OneSlot {...oneInstance}/></Grid>)}
-    </Grid>
+    <>
+      <Grid container direction="row" justify="flex-start" spacing={1} wrap="nowrap" className={classes.row}>
+          <Grid item xs={1}></Grid>
+          {kws.map((oneInstance, key) => 
+          <Grid item key={key} xs={4}>
+              <KwItem kw={oneInstance}/>
+          </Grid>
+          )}
+      </Grid>
+      {slotRows.map((oneInstance, key) => 
+      <OneSlot {...oneInstance}/>)}
+    </>
   );
 }

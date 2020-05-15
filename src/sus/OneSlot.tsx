@@ -9,17 +9,20 @@ const useStyles = makeStyles({
   slot: {
     textAlign: "left",
     fontSize: 11,
-    "align-self": "center",
     color: "#999999",
+    "align-self": "center"
   },
+  row: {
+    minWidth: 500
+  }
 });
 
 export const OneSlot = ({slot, lbInstances}: SlotRow) => {
   const classes = useStyles();
 
   return (
-    <Grid container direction="row" justify="flex-start" 
-        alignItems="stretch" spacing={1} wrap="nowrap">
+    <Grid container direction="row"
+        alignItems="stretch" spacing={1} wrap="nowrap" className={classes.row}>
       <Grid item xs={1} className={classes.slot}>
           <Box>
             <div>

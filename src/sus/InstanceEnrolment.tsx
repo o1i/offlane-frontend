@@ -1,7 +1,6 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import Card from '@material-ui/core/Card';
-import CardContent from '@material-ui/core/CardContent';
+import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import { LbInstance } from "../common/objects";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -11,6 +10,8 @@ const useStyles = makeStyles({
   root: {
     "border-style": "outset",
     "border-width": "thick",
+    "padding": "5px",
+    "height": "75%",
   },
   enrolled: {
     "border-color": "#aaddaa",
@@ -39,16 +40,9 @@ const useStyles = makeStyles({
   },
   lehrer: {
     fontSize: 12,
-    width: "49%",
   },
   ort: {
     fontSize: 12,
-    width: "49%",
-    "background-color": "#777777"
-  },
-  content: {
-    "padding": "5px",
-    "background-color": "#888888"
   },
 });
 
@@ -57,8 +51,7 @@ export const InstanceEnrolment = ({name, lehrer, ort, status}: LbInstance) => {
   const locked = (status === "expired" || status === "forced") ? true : false;
 
   return (
-    <Card className={`${classes.root} ${classes[status]}`}>
-      <CardContent className={classes.content}>
+    <Paper className={`${classes.root} ${classes[status]}`}>
         <div>
           <Typography className={classes.lock}><FontAwesomeIcon icon={locked ? faLock : faLockOpen} /></Typography>
         </div>
@@ -71,7 +64,6 @@ export const InstanceEnrolment = ({name, lehrer, ort, status}: LbInstance) => {
         {ort && <div>
           <Typography className={classes.ort}>{ort}</Typography>
         </div>}
-      </CardContent>
-    </Card>
+    </Paper>
   );
 }
