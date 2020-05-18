@@ -1,7 +1,7 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import { KwItem } from  './KwItem';
-import { SlotRow, Kw } from "../common/objects";
+import { SusInfo, Slot, Kw, LbInstance } from "../common/objects";
 import Grid from '@material-ui/core/Grid';
 import { OneSlot } from "./OneSlot";
 
@@ -18,8 +18,17 @@ const useStyles = makeStyles({
   }
 });
 
-export const SusPage = ({slotRows, kws}: {slotRows: SlotRow[], kws: Kw[]}) => {
+export const SusPage = ({slots, kws, lbInstances}: SusInfo) => {
   const classes = useStyles();
+
+  const slotRows = slots.map((slot: Slot) => (
+    {
+      slot: slot,
+      lbInstances: kws.map((kw) => (
+        lbInstances.find((lbInstance) => (lbInstance.kw === kw.index) && (lbInstance.slot === slot.id)) ?? {name: "Unbelegt", lehrer: "", ort: "", status: "open", slot: slot.id, kw: kw.index, id: -1} as LbInstance
+      ))
+    }
+  ))
 
   return (
     <>
@@ -36,3 +45,12 @@ export const SusPage = ({slotRows, kws}: {slotRows: SlotRow[], kws: Kw[]}) => {
     </>
   );
 }
+
+/* 
+type LbStatus = "open" | "forced" | "enrolled" |"expired"
+export interface LbInstance {name: string, lehrer: string, ort: string, status: LbStatus, slot: number, kw: number, id: number};
+export interface Slot {id: number, weekDay: string, time: string};
+export interface SlotRow {slot: Slot, lbInstances: LbInstance[]};
+export interface SusInfo {slots: Slot[], kws: Kw[], lbInstances: LbInstance[]};
+export interface Kw {index: number, from: string, to: string}; 
+*/

@@ -1,6 +1,6 @@
-import React from 'react';
+import React, {useContext} from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import {SlotRow } from "../common/objects";
+import {SlotRow, LbInstance } from "../common/objects";
 import Grid from '@material-ui/core/Grid';
 import { InstanceEnrolment } from "./InstanceEnrolment";
 import Box from '@material-ui/core/Box';

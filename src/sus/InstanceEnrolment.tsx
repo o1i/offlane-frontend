@@ -51,19 +51,19 @@ export const InstanceEnrolment = ({name, lehrer, ort, status}: LbInstance) => {
   const locked = (status === "expired" || status === "forced") ? true : false;
 
   return (
-    <Paper className={`${classes.root} ${classes[status]}`}>
-        <div>
-          <Typography className={classes.lock}><FontAwesomeIcon icon={locked ? faLock : faLockOpen} /></Typography>
-        </div>
-        <div>
-          <Typography className={`classes.fach ${status}`} gutterBottom>{name}</Typography>
-        </div>
-        {lehrer && <div>
-          <Typography className={classes.lehrer}>{lehrer}</Typography>
-        </div>}
-        {ort && <div>
-          <Typography className={classes.ort}>{ort}</Typography>
-        </div>}
-    </Paper>
+      <Paper className={`${classes.root} ${classes[status]}`}>
+          <div>
+            <Typography className={classes.lock}><FontAwesomeIcon icon={locked ? faLock : faLockOpen} /></Typography>
+          </div>
+          <div>
+            <Typography className={`classes.fach ${status}`} gutterBottom>{name}</Typography>
+          </div>
+          {lehrer && <div>
+            <Typography className={classes.lehrer}>{lehrer}</Typography>
+          </div>}
+          {ort && <div>
+            <Typography className={classes.ort}>{ort}</Typography>
+          </div>}
+      </Paper>
   );
 }
