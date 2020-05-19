@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import ReactDOM from "react-dom";
 import { SusPage } from "./sus/SusPage";
 import { getEnrolments } from "./sus/susApi";
+import { SusInfo } from "./common/objects";
 
 
 export const UserContext = React.createContext();
@@ -15,20 +16,22 @@ const App = () => {
 
 
     useEffect(()=>{
+        console.log("enrolments");
+        console.log(getEnrolments(user));
         setSusInfo(getEnrolments(user));
+        console.log("showing susinfo");
+        console.log(susInfo);
     }, []);
 
 
     return(
         <UserContext.Provider value={user}>
             {user.type === "sus" && 
-                <SusPage {...susInfo}/>
+                <SusPage {...susInfo} susInfoState={[susInfo, setSusInfo]}/>
             }
         </UserContext.Provider>
     );
 }
-
-
 
 ReactDOM.render(
     <App />,

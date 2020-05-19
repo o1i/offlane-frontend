@@ -1,17 +1,10 @@
 import React, {useState} from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import Button from '@material-ui/core/Button';
-import Avatar from '@material-ui/core/Avatar';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
-import ListItemAvatar from '@material-ui/core/ListItemAvatar';
-import ListItemText from '@material-ui/core/ListItemText';
-import DialogTitle from '@material-ui/core/DialogTitle';
 import Dialog from '@material-ui/core/Dialog';
-import Typography from '@material-ui/core/Typography';
-import { blue } from '@material-ui/core/colors';
-import { LbInstance } from '../common/objects';
-import { getEnrolmentOptions } from './susApi';
+import { LbInstance, SusInfo } from '../common/objects';
+import { enrol } from './susApi';
 
 const useStyles = makeStyles({
     name: {
@@ -22,7 +15,7 @@ const useStyles = makeStyles({
     },
   });
 
-export const LbSelectDialog = ({open, onClose, lbInstances}: {open:boolean, onClose: () => void, lbInstances: LbInstance[]}) => {
+export const LbSelectDialog = ({open, onClose, lbInstances, susInfoState}: {open:boolean, onClose: () => void, lbInstances: LbInstance[], susInfoState: [SusInfo, (susInfo: SusInfo) => void]}) => {
     
     const classes = useStyles();
 
@@ -32,14 +25,15 @@ export const LbSelectDialog = ({open, onClose, lbInstances}: {open:boolean, onCl
     }
 
     const handleListItemClick = (lbInstance: LbInstance) => {
+        enrol(lbInstance, susInfoState[0], susInfoState[1]);
         onClose();
     }
 
     return(
         <Dialog open={open} onClose={handleClose}>
             <List>
-                {lbInstances.map((lbInstance)=>(
-                    <ListItem button onClick={() => handleListItemClick(lbInstance)} key={lbInstance.id}>
+                {lbInstances.map((lbInstance, index)=>(
+                    <ListItem button onClick={() => handleListItemClick(lbInstance)} key={index}>
                             <span className={classes.name}>{lbInstance.name}, </span><span className={classes.rest}>{lbInstance.lehrer}, {lbInstance.ort}</span>
                     </ListItem>
                 ))}

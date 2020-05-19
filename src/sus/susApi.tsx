@@ -1,4 +1,3 @@
-
 import { LbInstance, SusInfo, Kw, Slot } from "../common/objects";
 
 export const getEnrolments = (sus: number) => {
@@ -9,23 +8,23 @@ export const getEnrolments = (sus: number) => {
     });
 }
 
-export const enrol = (lbInstance: LbInstance, getter: ()=>(SusInfo), setter: (lbInstance: SusInfo)=>(void)) =>  {
-    const susInfo = getter()
+export const enrol = (lbInstance: LbInstance, susInfo: SusInfo, setter: (lbInstance: SusInfo)=>(void)) =>  {
     const ind = susInfo.lbInstances.findIndex((lb)=>(lb.kw === lbInstance.kw)&&(lb.slot === lbInstance.slot))
     if(ind>=0){
-        susInfo.lbInstances.splice(ind, 1, lbInstance)
+        susInfo.lbInstances.splice(ind, 1, lbInstance);
     }else{
-        susInfo.lbInstances.push(lbInstance)
+        susInfo.lbInstances.push(lbInstance);
     }
-    setter(susInfo)
+    setter(susInfo);
+    console.log(susInfo);
 }
 
 export const getEnrolmentOptions = (kw_index: number, slot_id: number, sus: number) => {
     return([
-        {name: "Math", lehrer: "Böni", ort: "Spielwiese", status: "enrolled"} as LbInstance,
-        {name: "RZG", lehrer: "Böni", ort: "Museum", status: "enrolled"} as LbInstance,
-        {name: "FD", lehrer: "Böni", ort: "Ruine", status: "forced"} as LbInstance,
-        {name: "Vergangen", lehrer: "Böni", ort: "Traumwelt", status: "expired"} as LbInstance,
-        {name: "Unbelegt", lehrer: "", ort: "", status: "open"} as LbInstance,
+        {name: "Math", lehrer: "Böni", ort: "Spielwiese", status: "enrolled", slot: slot_id, kw: kw_index, id:1, current: 5, soft: 20, hard: 25} as LbInstance,
+        {name: "RZG", lehrer: "Böni", ort: "Museum", status: "enrolled", slot: slot_id, kw: kw_index, id:1, current: 5, soft: 20, hard: 25} as LbInstance,
+        {name: "FD", lehrer: "Böni", ort: "Ruine", status: "forced", slot: slot_id, kw: kw_index, id:1, current: 5, soft: 20, hard: 25} as LbInstance,
+        {name: "Vergangen", lehrer: "Böni", ort: "Traumwelt", status: "expired", slot: slot_id, kw: kw_index, id:1, current: 5, soft: 20, hard: 25} as LbInstance,
+        {name: "Unbelegt", lehrer: "", ort: "", status: "open", slot: slot_id, kw: kw_index, id:1, current: 5, soft: 20, hard: 25} as LbInstance,
     ]);
 }

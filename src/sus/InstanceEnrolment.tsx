@@ -3,8 +3,9 @@ import { makeStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import { LbInstance } from "../common/objects";
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faLock, faLockOpen } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faLock, faLockOpen } from '@fortawesome/free-solid-svg-icons';
+import { getEnrolmentOptions } from "./susApi";
 
 const useStyles = makeStyles({
   root: {
@@ -46,12 +47,19 @@ const useStyles = makeStyles({
   },
 });
 
-export const InstanceEnrolment = ({name, lehrer, ort, status}: LbInstance) => {
+export const InstanceEnrolment = ({lbInstance, optionSetter}: {lbInstance: LbInstance, optionSetter: (lbInstances: LbInstance[]) => void}) => {
   const classes = useStyles();
+
+  const {name, lehrer, ort, status, kw, slot} = lbInstance;
+
   const locked = (status === "expired" || status === "forced") ? true : false;
 
+  const handleClick = () => {
+    optionSetter(getEnrolmentOptions(kw, slot, 1));
+  }
+
   return (
-      <Paper className={`${classes.root} ${classes[status]}`}>
+      <Paper className={`${classes.root} ${classes[status]}`} onClick={handleClick}>
           <div>
             <Typography className={classes.lock}><FontAwesomeIcon icon={locked ? faLock : faLockOpen} /></Typography>
           </div>

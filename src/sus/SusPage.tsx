@@ -1,9 +1,10 @@
-import React from 'react';
+import React, {useState} from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import { KwItem } from  './KwItem';
 import { SusInfo, Slot, Kw, LbInstance } from "../common/objects";
 import Grid from '@material-ui/core/Grid';
 import { OneSlot } from "./OneSlot";
+import { LbSelectDialog } from "./LbSelectDialog"
 
 const useStyles = makeStyles({
   slot: {
@@ -18,8 +19,19 @@ const useStyles = makeStyles({
   }
 });
 
-export const SusPage = ({slots, kws, lbInstances}: SusInfo) => {
+export const SusPage = ({slots, kws, lbInstances, susInfoState}: {slots: Slot[], kws: Kw[], lbInstances: LbInstance[], susInfoState: [SusInfo, (susInfo: SusInfo) => void]}) => {
   const classes = useStyles();
+
+  const [dialogueOpen, setDialogueOpen] = useState(false);
+  const [dialogueOptions, setDialogueOptions] = useState([] as LbInstance[]);
+
+  const handleDialogueClose = () =>{
+    setDialogueOpen(false);
+  }
+  const setOptionsAndOpen = (lbInstances: LbInstance[]) => {
+    setDialogueOptions(lbInstances);
+    setDialogueOpen(true);
+  }
 
   const slotRows = slots.map((slot: Slot) => (
     {
@@ -40,17 +52,9 @@ export const SusPage = ({slots, kws, lbInstances}: SusInfo) => {
           </Grid>
           )}
       </Grid>
-      {slotRows.map((oneInstance, key) => 
-      <OneSlot {...oneInstance}/>)}
+      {slotRows.map((oneInstance, index) => 
+      <OneSlot slotRow={oneInstance} optionSetter={setOptionsAndOpen} key={index}/>)}
+      <LbSelectDialog open={dialogueOpen} onClose={handleDialogueClose} lbInstances={dialogueOptions} susInfoState={susInfoState}/>
     </>
   );
 }
-
-/* 
-type LbStatus = "open" | "forced" | "enrolled" |"expired"
-export interface LbInstance {name: string, lehrer: string, ort: string, status: LbStatus, slot: number, kw: number, id: number};
-export interface Slot {id: number, weekDay: string, time: string};
-export interface SlotRow {slot: Slot, lbInstances: LbInstance[]};
-export interface SusInfo {slots: Slot[], kws: Kw[], lbInstances: LbInstance[]};
-export interface Kw {index: number, from: string, to: string}; 
-*/

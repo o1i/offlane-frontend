@@ -1,6 +1,6 @@
 import React, {useContext} from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import {SlotRow, LbInstance } from "../common/objects";
+import {SlotRow, LbInstance, Slot } from "../common/objects";
 import Grid from '@material-ui/core/Grid';
 import { InstanceEnrolment } from "./InstanceEnrolment";
 import Box from '@material-ui/core/Box';
@@ -17,8 +17,10 @@ const useStyles = makeStyles({
   }
 });
 
-export const OneSlot = ({slot, lbInstances}: SlotRow) => {
+export const OneSlot = ({slotRow, optionSetter}: {slotRow: SlotRow, optionSetter: (lbInstances: LbInstance[]) => void}) => {
   const classes = useStyles();
+
+  const {slot, lbInstances} = slotRow;
 
   return (
     <Grid container direction="row"
@@ -33,7 +35,7 @@ export const OneSlot = ({slot, lbInstances}: SlotRow) => {
       </Grid>
       {lbInstances.map((oneInstance, key) => 
         <Grid item key={key} xs={4}>
-            <InstanceEnrolment {...oneInstance}/>
+            <InstanceEnrolment lbInstance={oneInstance} optionSetter={optionSetter}/>
         </Grid>
         )}
     </Grid>
