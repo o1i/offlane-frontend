@@ -1,7 +1,9 @@
-export const getLpLbInfo = () => {
+import { LbInstance, User, LpLbBelegungRow } from "../common/objects";
+
+export const getLpLbInfo = (lp: number) => {
     return (
         [[
-            {lb:  {name: "Math", ort: "Spielwiese", kw: 1, id:1, current: 5, soft: 20, hard: 25, start: 1590311476}, 
+            {lbInstance:  {name: "Math", ort: "Spielwiese", kw: 1, id:1, current: 5, soft: 20, hard: 25, start: 1590311476} as LbInstance, 
             sus: [
                 {name: "Athena Imperia Arnold", id: 3},
                 {name: "Boris Burri", id: 4},
@@ -27,8 +29,8 @@ export const getLpLbInfo = () => {
                 {name: "Walter Wunderlich", id: 24},
                 {name: "Xaver !Xabu", id: 25},
                 {name: "Zoe Zapatero", id: 26},
-            ]},
-            {lb:  {name: "Math", ort: "Spielwiese", kw: 1, id:2, current: 21, soft: 20, hard: 25, start: 1590311477}, 
+            ]  as User[]},
+            {lbInstance:  {name: "Math", ort: "Spielwiese", kw: 1, id:2, current: 21, soft: 20, hard: 25, start: 1590311477} as LbInstance, 
             sus: [
                 {name: "Athena Imperia Arnold", id: 3},
                 {name: "Boris Burri", id: 4},
@@ -52,8 +54,8 @@ export const getLpLbInfo = () => {
                 {name: "Walter Wunderlich", id: 24},
                 {name: "Xaver !Xabu", id: 25},
                 {name: "Zoe Zapatero", id: 26},
-            ]},
-            {lb:  {name: "Math", ort: "Spielwiese", kw: 1, id:3, current: 15, soft: 20, hard: 25, start: 1590311478}, 
+            ]  as User[]},
+            {lbInstance:  {name: "Math", ort: "Spielwiese", kw: 1, id:3, current: 15, soft: 20, hard: 25, start: 1590311478} as LbInstance, 
             sus: [
                 {name: "Athena Imperia Arnold", id: 3},
                 {name: "Boris Burri", id: 4},
@@ -72,8 +74,8 @@ export const getLpLbInfo = () => {
                 {name: "Olivia Oderbolz", id: 17},
                 {name: "Patrick Probst", id: 18},
                 {name: "Zoe Zapatero", id: 26},
-            ]}],[
-            {lb:  {name: "Math", ort: "Spielwiese", kw: 2, id:1, current: 5, soft: 20, hard: 25, start: 1590311479}, 
+            ]  as User[]}],[
+            {lbInstance:  {name: "Math", ort: "Spielwiese", kw: 2, id:1, current: 5, soft: 20, hard: 25, start: 1590311479} as LbInstance, 
             sus: [
                 {name: "Athena Imperia Arnold", id: 3},
                 {name: "Boris Burri", id: 4},
@@ -99,8 +101,8 @@ export const getLpLbInfo = () => {
                 {name: "Walter Wunderlich", id: 24},
                 {name: "Xaver !Xabu", id: 25},
                 {name: "Zoe Zapatero", id: 26},
-            ]},
-            {lb:  {name: "Math", ort: "Spielwiese", kw: 2, id:1, current: 0, soft: 20, hard: 25, start: 1590311480}, 
+            ]  as User[]},
+            {lbInstance:  {name: "Math", ort: "Spielwiese", kw: 2, id:1, current: 0, soft: 20, hard: 25, start: 1590311480} as LbInstance, 
             sus: [
             ]}],
         ]
