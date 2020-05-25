@@ -6,9 +6,9 @@ export default { title: "OneSlot"}
 
 export const theOneSlot = () => (
     <Grid container spacing={1}>
-        <OneSlot slot={{weekDay:"Mo", time:"10:15-\n11:00"}} lbInstances={[
+        <OneSlot slotRow={{slot:{weekDay:"Mo", time:"10:15-\n11:00"}, lbInstances:[
             {name: "Math", lehrer: "Böni", ort: "Dungeon", status: "expired"}, 
             {name: "Geo", lehrer: "Böni", ort: "Dungeon", status: "forced"}, 
-            {name: "Unbelegt", lehrer: "", ort: "", status: "open"}]}/>
+            {name: "Unbelegt", lehrer: "", ort: "", status: "open"}]}} optionSetter={(some) => {}}/>
     </Grid>
     )
