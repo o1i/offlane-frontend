@@ -7,7 +7,9 @@ import { LpLbPage } from "./LpLbPage";
 import { LpSusPage } from "./LpSusPage";
 
 const useStyles = makeStyles({
-  
+  selectorTab: {
+    "margin-bottom": 10
+  }
 });
 
 export const LpPage = () => {
@@ -22,7 +24,7 @@ export const LpPage = () => {
   
   return (
     <>
-        <Paper square>
+        <Paper square className={classes.selectorTab}>
             <Tabs
                 value={tabState}
                 indicatorColor="primary"
