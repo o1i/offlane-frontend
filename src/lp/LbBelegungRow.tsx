@@ -57,7 +57,7 @@ export const LbBelegungRow = ({lbBelegung, getState, setState}: {lbBelegung: {lb
                             <ListItem>
                                 <ListItemText primary={name}/>
                                 <ListItemSecondaryAction>
-                                <IconButton edge="end" aria-label="delete" onClick={() => unEnrolSus(id, lbInstance.id)}>
+                                <IconButton edge="end" aria-label="delete" onClick={() => unEnrolSus(id, lbInstance.id, getState, setState)}>
                                     <DeleteIcon />
                                 </IconButton>
                                 </ListItemSecondaryAction>
