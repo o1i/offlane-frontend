@@ -14,7 +14,7 @@ const useStyles = makeStyles({
     },
   });
 
-export const LpAddSusDialog = ({open, onClose, suses, lbInstance, enrolSus}: {open:boolean, onClose: () => void, suses: User[], lbInstance: LbInstance, enrolSus: (susId: number) => void}) => {
+export const LpAddSusDialog = ({open, onClose, suses, lbInstance, enrolSus}: {open:boolean, onClose: () => void, suses: User[], lbInstance: LbInstance, enrolSus: (theSus: User) => void}) => {
     
     const classes = useStyles();
 
@@ -23,8 +23,8 @@ export const LpAddSusDialog = ({open, onClose, suses, lbInstance, enrolSus}: {op
         onClose();
     }
 
-    const handleListItemClick = (susId: number) => {
-        enrolSus(susId);
+    const handleListItemClick = (theSus: User) => {
+        enrolSus(theSus);
         onClose();
     }
 
@@ -32,7 +32,7 @@ export const LpAddSusDialog = ({open, onClose, suses, lbInstance, enrolSus}: {op
         <Dialog open={open} onClose={handleClose}>
             <List>
                 {suses.map((sus, index)=>(
-                    <ListItem button onClick={() => handleListItemClick(sus.id)} key={index}>
+                    <ListItem button onClick={() => handleListItemClick(sus)} key={index}>
                             <span className={classes.name}>{sus.name}, </span>
                     </ListItem>
                 ))}

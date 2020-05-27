@@ -11,7 +11,7 @@ const useStyles = makeStyles({
 export const LpLbPage = () => {
   const classes = useStyles();
   const lp = 1;
-  const [lbState, setLbState] = useState(getLpLbInfo(lp))
+  const [lbState, setLbState] = useState(getLpLbInfo(lp) as {lbInstance: LbInstance, sus: User[]}[][])
 
   
   return (
@@ -19,7 +19,7 @@ export const LpLbPage = () => {
     {
       lbState.map((oneInstance)=> {
         return(
-          <LbBelegungRow lbBelegung={oneInstance}/>
+          <LbBelegungRow lbBelegung={oneInstance} getState={lbState} setState={setLbState}/>
         );
       })
     }

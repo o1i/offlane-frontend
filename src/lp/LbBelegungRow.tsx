@@ -30,7 +30,7 @@ const useStyles = makeStyles({
     }
 });
 
-export const LbBelegungRow = ({lbBelegung}: {lbBelegung: {lbInstance: LbInstance, sus: User[]}[]}) => {
+export const LbBelegungRow = ({lbBelegung, getState, setState}: {lbBelegung: {lbInstance: LbInstance, sus: User[]}[], getState: {lbInstance: LbInstance, sus: User[]}[][], setState: (enrolState: {lbInstance: LbInstance, sus: User[]}[][]) => void}) => {
 
     const classes = useStyles();
 
@@ -44,7 +44,7 @@ export const LbBelegungRow = ({lbBelegung}: {lbBelegung: {lbInstance: LbInstance
             return(
                 <Grid item md={4}>
                     <LbBelegung lb={lbInstance} sus={sus}/>
-                    <LpAddSusDialog open={dialogState} onClose={closeDialog} suses={getEligibleSus(lbInstance.id)} lbInstance={lbInstance} enrolSus={enrolSusFactory(lbInstance.id)}/>
+                    <LpAddSusDialog open={dialogState} onClose={closeDialog} suses={getEligibleSus(lbInstance.id)} lbInstance={lbInstance} enrolSus={enrolSusFactory(lbInstance.id, getState, setState)}/>
                     <List dense={true} className={classes.susList}>
                     <ListItem alignItems="center" button={true} dense={true} divider={true} className={classes.iconButtonListItem} onClick={() => setDialogState(true)}>
                         <IconButton aria-label="add" className={classes.iconButton} color="primary">

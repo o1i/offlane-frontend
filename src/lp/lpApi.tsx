@@ -109,10 +109,25 @@ export const getLpLbInfo = (lp: number) => {
     );
 }
 
-export const enrolSusFactory = (lbId: number) => {
-    return ((susId: number) => console.log("Enrolling SuS" + susId + "into Lb " + lbId))
+export const enrolSus = (lbId: number, theSus: User, getState: {lbInstance: LbInstance, sus: User[]}[][], setState: (enrolState: {lbInstance: LbInstance, sus: User[]}[][]) => void) => {
+    const currentState = getState;
+    let add = false;
+    currentState.forEach(rowArray => rowArray.forEach(({lbInstance, sus}) => {
+        if(lbInstance.id===lbId){
+            if(!sus.some(user=>user.id === theSus.id)){
+                console.log("Adding sus " + theSus);
+                sus.push(theSus);
+                add = true;
+                lbInstance.current = sus.length;
+            }
+        }
+    }))
+    if(add){setState(currentState)};
 }
 
+export const enrolSusFactory = (lbId: number, getState: {lbInstance: LbInstance, sus: User[]}[][], setState: (enrolState: {lbInstance: LbInstance, sus: User[]}[][]) => void) => {
+    return ((theSus: User) => enrolSus(lbId, theSus, getState, setState));
+}
 
 export const unEnrolSus = (susId: number, lbId: number) => {
     console.log("Unnrolling SuS" + susId + "into Lb " + lbId)
