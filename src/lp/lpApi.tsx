@@ -110,7 +110,7 @@ export const getLpLbInfo = (lp: number) => {
 }
 
 export const enrolSus = (lbId: number, theSus: User, getState: {lbInstance: LbInstance, sus: User[]}[][], setState: (enrolState: {lbInstance: LbInstance, sus: User[]}[][]) => void) => {
-    const currentState = getState;
+    const currentState = getState.map(a=>a);
     let add = false;
     currentState.forEach(rowArray => rowArray.forEach(({lbInstance, sus}) => {
         if(lbInstance.id===lbId){
@@ -126,9 +126,6 @@ export const enrolSus = (lbId: number, theSus: User, getState: {lbInstance: LbIn
     if(add){setState(currentState)};
 }
 
-export const enrolSusFactory = (lbId: number, getState: {lbInstance: LbInstance, sus: User[]}[][], setState: (enrolState: {lbInstance: LbInstance, sus: User[]}[][]) => void) => {
-    return ((theSus: User) => enrolSus(lbId, theSus, getState, setState));
-}
 
 export const unEnrolSus = (susId: number, lbId: number, getState: {lbInstance: LbInstance, sus: User[]}[][], setState: (enrolState: {lbInstance: LbInstance, sus: User[]}[][]) => void) => {
     console.log("attempt to unenrol sus " + susId + "from lb " + lbId);

@@ -10,8 +10,7 @@ import ListItemText from '@material-ui/core/ListItemText';
 import IconButton from '@material-ui/core/IconButton';
 import DeleteIcon from '@material-ui/icons/Delete';
 import AddCircle from '@material-ui/icons/AddCircle';
-import { LpAddSusDialog } from "./LpAddSusDialog";
-import { getEligibleSus, enrolSusFactory, unEnrolSus } from "./lpApi";
+import { getEligibleSus, unEnrolSus } from "./lpApi";
 
 const useStyles = makeStyles({
     gridRow: {
@@ -30,23 +29,30 @@ const useStyles = makeStyles({
     }
 });
 
-export const LbBelegungRow = ({lbBelegung, getState, setState}: {lbBelegung: {lbInstance: LbInstance, sus: User[]}[], getState: {lbInstance: LbInstance, sus: User[]}[][], setState: (enrolState: {lbInstance: LbInstance, sus: User[]}[][]) => void}) => {
+export const LbBelegungRow = ({lbBelegung, getState, setState, setDialogUsers, setDialogLb, setDialogState}: 
+    {lbBelegung: {lbInstance: LbInstance, sus: User[]}[], 
+    getState: {lbInstance: LbInstance, sus: User[]}[][], 
+    setState: (enrolState: {lbInstance: LbInstance, sus: User[]}[][]) => void, 
+    setDialogUsers: (suses: User[]) => void, 
+    setDialogLb: (LbInstance: LbInstance) => void,
+    setDialogState: (state: boolean) => void}) => {
 
     const classes = useStyles();
 
-    const [dialogState, setDialogState] = useState(false);
-
-    const closeDialog = () => setDialogState(false)
+    const handleClick = (lbInstance: LbInstance) => {
+        setDialogLb(lbInstance);
+        setDialogUsers(getEligibleSus(lbInstance.id));
+        setDialogState(true);
+    }
 
     return(
         <Grid container direction="row" spacing={2} wrap="nowrap" className={classes.gridRow} >
         {lbBelegung.map(({lbInstance, sus}) => {
             return(
-                <Grid item md={4}>
+                <Grid item md={4} key={lbInstance.id}>
                     <LbBelegung lb={lbInstance} sus={sus}/>
-                    <LpAddSusDialog open={dialogState} onClose={closeDialog} suses={getEligibleSus(lbInstance.id)} lbInstance={lbInstance} enrolSus={enrolSusFactory(lbInstance.id, getState, setState)}/>
                     <List dense={true} className={classes.susList}>
-                    <ListItem alignItems="center" button={true} dense={true} divider={true} className={classes.iconButtonListItem} onClick={() => setDialogState(true)}>
+                    <ListItem alignItems="center" button={true} dense={true} divider={true} className={classes.iconButtonListItem} onClick={() => handleClick(lbInstance)}>
                         <IconButton aria-label="add" className={classes.iconButton} color="primary">
                             <AddCircle />
                         </IconButton>
@@ -54,7 +60,7 @@ export const LbBelegungRow = ({lbBelegung, getState, setState}: {lbBelegung: {lb
                     {
                     sus.map(({name, id}) => {
                         return(
-                            <ListItem>
+                            <ListItem key={id}>
                                 <ListItemText primary={name}/>
                                 <ListItemSecondaryAction>
                                 <IconButton edge="end" aria-label="delete" onClick={() => unEnrolSus(id, lbInstance.id, getState, setState)}>

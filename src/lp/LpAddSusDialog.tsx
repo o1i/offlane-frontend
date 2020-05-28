@@ -4,6 +4,7 @@ import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import Dialog from '@material-ui/core/Dialog';
 import { LbInstance, User } from '../common/objects';
+import { enrolSus } from "./lpApi";
 
 const useStyles = makeStyles({
     name: {
@@ -14,7 +15,8 @@ const useStyles = makeStyles({
     },
   });
 
-export const LpAddSusDialog = ({open, onClose, suses, lbInstance, enrolSus}: {open:boolean, onClose: () => void, suses: User[], lbInstance: LbInstance, enrolSus: (theSus: User) => void}) => {
+export const LpAddSusDialog = ({open, onClose, suses, lbInstance, getState, setState}: {open:boolean, onClose: () => void, suses: User[], lbInstance: LbInstance, 
+                                getState: {lbInstance: LbInstance, sus: User[]}[][], setState: (enrolState: {lbInstance: LbInstance, sus: User[]}[][]) => void}) => {
     
     const classes = useStyles();
 
@@ -24,7 +26,7 @@ export const LpAddSusDialog = ({open, onClose, suses, lbInstance, enrolSus}: {op
     }
 
     const handleListItemClick = (theSus: User) => {
-        enrolSus(theSus);
+        enrolSus(lbInstance.id, theSus, getState, setState);
         onClose();
     }
 
