@@ -1,7 +1,8 @@
 import React, {useState} from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import { KwItem } from  './KwItem';
-import { SusInfo, Slot, Kw, LbInstance } from "../common/objects";
+import { SusInfo, Block, Kw, LbInstance } from "../common/objects";
+import { getWeek } from "../common/functions";
 import Grid from '@material-ui/core/Grid';
 import { OneSlot } from "./OneSlot";
 import { LbSelectDialog } from "./LbSelectDialog"
@@ -19,7 +20,7 @@ const useStyles = makeStyles({
   }
 });
 
-export const SusPage = ({slots, kws, lbInstances, susInfoState}: {slots: Slot[], kws: Kw[], lbInstances: LbInstance[], susInfoState: [SusInfo, (susInfo: SusInfo) => void]}) => {
+export const SusPage = ({blocks, kws, lbInstances, susInfoState}: {blocks: Block[], kws: Kw[], lbInstances: LbInstance[], susInfoState: [SusInfo, (susInfo: SusInfo) => void]}) => {
   const classes = useStyles();
 
   const [dialogueOpen, setDialogueOpen] = useState(false);
@@ -33,11 +34,12 @@ export const SusPage = ({slots, kws, lbInstances, susInfoState}: {slots: Slot[],
     setDialogueOpen(true);
   }
 
-  const slotRows = slots.map((slot: Slot) => (
+  const slotRows = blocks.map((block: Block) => (
     {
-      slot: slot,
+      block: block,
       lbInstances: kws.map((kw) => (
-        lbInstances.find((lbInstance) => (lbInstance.kw === kw.index) && (lbInstance.slot === slot.id)) ?? {name: "Unbelegt", lehrer: "", ort: "", status: "open", slot: slot.id, kw: kw.index, id: -1} as LbInstance
+        lbInstances.find((lbInstance) => (getWeek(new Date(lbInstance.start)) === kw.index) && (lbInstance.lb.block.id === block.id)) ?? 
+        {lb: {name: "Unbelegt", lehrer: "", ort: "", block: {id: block.id}}, status: "open", id: -1} as LbInstance
       ))
     }
   ))

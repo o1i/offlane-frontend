@@ -20,7 +20,7 @@ const useStyles = makeStyles({
 export const OneSlot = ({slotRow, optionSetter}: {slotRow: SlotRow, optionSetter: (lbInstances: LbInstance[]) => void}) => {
   const classes = useStyles();
 
-  const {slot, lbInstances} = slotRow;
+  const {block, lbInstances} = slotRow;
 
   return (
     <Grid container direction="row"
@@ -28,8 +28,8 @@ export const OneSlot = ({slotRow, optionSetter}: {slotRow: SlotRow, optionSetter
       <Grid item xs={1} className={classes.slot}>
           <Box>
             <div>
-                <div>{slot.weekDay}</div>
-                <div>{slot.time}</div>
+                <div>{block.weekDay}</div>
+                <div>{block.start}-{block.end}</div>
             </div>
           </Box>
       </Grid>

@@ -1,9 +1,12 @@
 import { LbInstance, User } from "../common/objects";
+//export interface Lernbuero {name: string, lehrer: string, ort: string, soft: number, hard: number, block: number, id: number};
+//export interface Block {weekDay: number, start: string, end: string, gruppe: number, id: number}
 
+//export interface LbInstance {lb: Lernbuero, status: LbStatus, current: number, id: number};
 export const getLpLbInfo = (lp: number) => {
     return (
         [[
-            {lbInstance:  {name: "Math", ort: "Spielwiese", kw: 1, id:1, current: 24, soft: 20, hard: 25, start: 1590311476} as LbInstance, 
+            {lbInstance:  {lb: {name: "Math", ort: "Spielwiese", soft: 20, hard: 25, block: {weekDay: 1, start: "10:15", end: "11:00"}, id: 1}, current: 24, start: 1590311476, id:1} as LbInstance, 
             sus: [
                 {name: "Athena Imperia Arnold", id: 3},
                 {name: "Boris Burri", id: 4},
@@ -30,7 +33,7 @@ export const getLpLbInfo = (lp: number) => {
                 {name: "Xaver !Xabu", id: 25},
                 {name: "Zoe Zapatero", id: 26},
             ]  as User[]},
-            {lbInstance:  {name: "Math", ort: "Spielwiese", kw: 1, id:2, current: 22, soft: 20, hard: 25, start: 1590311477} as LbInstance, 
+            {lbInstance:  {lb: {name: "Math", ort: "Spielwiese", soft: 20, hard: 25, block: {weekDay: 3, start: "10:15", end: "11:00"}, id: 2}, current: 22, start: 1590311477, id:2} as LbInstance, 
             sus: [
                 {name: "Athena Imperia Arnold", id: 3},
                 {name: "Boris Burri", id: 4},
@@ -55,7 +58,7 @@ export const getLpLbInfo = (lp: number) => {
                 {name: "Xaver !Xabu", id: 25},
                 {name: "Zoe Zapatero", id: 26},
             ]  as User[]},
-            {lbInstance:  {name: "Math", ort: "Spielwiese", kw: 1, id:3, current: 17, soft: 20, hard: 25, start: 1590311478} as LbInstance, 
+            {lbInstance:  {lb: {name: "Math", ort: "Spielwiese", soft: 20, hard: 25, block: {weekDay: 5, start: "10:15", end: "11:00"}, id: 3}, current: 17, start: 1590311478, id:3} as LbInstance, 
             sus: [
                 {name: "Athena Imperia Arnold", id: 3},
                 {name: "Boris Burri", id: 4},
@@ -75,7 +78,7 @@ export const getLpLbInfo = (lp: number) => {
                 {name: "Patrick Probst", id: 18},
                 {name: "Zoe Zapatero", id: 26},
             ]  as User[]}],[
-            {lbInstance:  {name: "Math", ort: "Spielwiese", kw: 2, id:5, current: 24, soft: 20, hard: 25, start: 1590311479} as LbInstance, 
+            {lbInstance:  {lb: {name: "Math", ort: "Spielwiese", soft: 20, hard: 25, block: {weekDay: 1, start: "10:15", end: "11:00"}, id: 1}, current: 17, start: 1590311479, id:5} as LbInstance, 
             sus: [
                 {name: "Athena Imperia Arnold", id: 3},
                 {name: "Boris Burri", id: 4},
@@ -102,7 +105,7 @@ export const getLpLbInfo = (lp: number) => {
                 {name: "Xaver !Xabu", id: 25},
                 {name: "Zoe Zapatero", id: 26},
             ]  as User[]},
-            {lbInstance:  {name: "Math", ort: "Spielwiese", kw: 2, id:4, current: 0, soft: 20, hard: 25, start: 1590311480} as LbInstance, 
+            {lbInstance:  {lb: {name: "Math", ort: "Spielwiese", soft: 20, hard: 25, block: {weekDay: 3, start: "10:15", end: "11:00"}, id: 2}, current: 0, start: 1590311480, id:7} as LbInstance, 
             sus: [
             ]}],
         ]

@@ -34,7 +34,7 @@ export const LbSelectDialog = ({open, onClose, lbInstances, susInfoState}: {open
             <List>
                 {lbInstances.map((lbInstance, index)=>(
                     <ListItem button onClick={() => handleListItemClick(lbInstance)} key={index}>
-                            <span className={classes.name}>{lbInstance.name}, </span><span className={classes.rest}>{lbInstance.lehrer}, {lbInstance.ort}</span>
+                            <span className={classes.name}>{lbInstance.lb.name}, </span><span className={classes.rest}>{lbInstance.lb.lehrer}, {lbInstance.lb.ort}</span>
                     </ListItem>
                 ))}
             </List>

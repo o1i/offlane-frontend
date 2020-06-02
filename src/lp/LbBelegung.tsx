@@ -28,8 +28,8 @@ export const LbBelegung = ({lb, sus}: {lb: LbInstance, sus: User[]}) => {
 
     return(
         <Paper square className={classes.paper}>
-            <span className={classes.name}>{lb.name}</span> <span className={classes.rest}>{dateFormat.format(lb.start)} {lb.ort}  </span> 
-            <Chip className={classes.chip} size="small" label={lb.current + "/" + lb.soft} />
+            <span className={classes.name}>{lb.lb.name}</span> <span className={classes.rest}>{dateFormat.format(lb.start)} {lb.lb.ort}  </span> 
+            <Chip className={classes.chip} size="small" label={lb.current + "/" + lb.lb.soft} />
         </Paper>
     );
 }
