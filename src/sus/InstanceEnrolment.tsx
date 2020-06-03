@@ -60,8 +60,6 @@ export const InstanceEnrolment = ({lbInstance, optionSetter}: {lbInstance: LbIns
     const options = getEnrolmentOptions(kw, lb.block.id, 1);
     options.forEach((lbi, index) => lbi.start = lbInstance.start);
     options.forEach((lbi, index) => lbi.lb.block.id = lb.block.id);
-    console.log("options");
-    console.log(options);
     optionSetter(options);
   }
 

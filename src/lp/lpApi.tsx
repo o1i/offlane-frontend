@@ -118,7 +118,6 @@ export const enrolSus = (lbId: number, theSus: User, getState: {lbInstance: LbIn
     currentState.forEach(rowArray => rowArray.forEach(({lbInstance, sus}) => {
         if(lbInstance.id===lbId){
             if(!sus.some(user=>user.id === theSus.id)){
-                console.log("Adding sus " + theSus);
                 sus.push(theSus);
                 sus.sort((sus1, sus2) => sus1.name < sus2.name ? -1 : 1);
                 add = true;
@@ -131,18 +130,14 @@ export const enrolSus = (lbId: number, theSus: User, getState: {lbInstance: LbIn
 
 
 export const unEnrolSus = (susId: number, lbId: number, getState: {lbInstance: LbInstance, sus: User[]}[][], setState: (enrolState: {lbInstance: LbInstance, sus: User[]}[][]) => void) => {
-    console.log("attempt to unenrol sus " + susId + "from lb " + lbId);
     const currentState = getState.map(a=>a);
     currentState.forEach(rowArray => rowArray.forEach(({lbInstance, sus}) => {
         if(lbInstance.id===lbId){
-            console.log("filtering. length before: " + sus.length);
             const toRemove = sus.findIndex(aSus => aSus.id === susId);
             sus.splice(toRemove, 1);
-            console.log("filtering. length after: " + sus.length);
             lbInstance.current = sus.length;
         }
     }))
-    console.log(currentState);
     setState(currentState);
 }
 

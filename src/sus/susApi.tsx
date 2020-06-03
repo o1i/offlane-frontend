@@ -17,18 +17,12 @@ export const getEnrolments = (sus: number) => {
 
 export const enrol = (lbInstance: LbInstance, susInfo: SusInfo, setter: (lbInstance: SusInfo)=>(void)) =>  {
     const ind = susInfo.lbInstances.findIndex((lb)=>(getWeek(new Date(lb.start*1000)) === getWeek(new Date(lbInstance.start*1000)))&&(lb.lb.block.id === lbInstance.lb.block.id))
-    console.log("enrolling: LB" + lbInstance);
-    console.log("lbinstance.lb" + lbInstance.lb);
-    console.log("lbinstance.lb" + lbInstance.start);
-    console.log("enrolling: SusInfo" + susInfo);
-    console.log("ind = "+ ind )
     if(ind>=0){
         susInfo.lbInstances.splice(ind, 1, lbInstance);
     }else{
         susInfo.lbInstances.push(lbInstance);
     }
     setter(susInfo);
-    console.log(susInfo);
 }
 
 export const getEnrolmentOptions = (kw_index: number, slot_id: number, sus: number) => {

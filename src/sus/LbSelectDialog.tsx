@@ -25,9 +25,6 @@ export const LbSelectDialog = ({open, onClose, lbInstances, susInfoState}: {open
     }
 
     const handleListItemClick = (lbInstance: LbInstance) => {
-        console.log("handleListItemClick");
-        console.log(lbInstance);
-        console.log("done");
         enrol(lbInstance, susInfoState[0], susInfoState[1]);
         onClose();
     }

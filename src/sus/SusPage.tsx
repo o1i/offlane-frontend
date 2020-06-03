@@ -28,23 +28,12 @@ export const SusPage = ({blocks, kws, lbInstances, susInfoState}: {blocks: Block
   const [dialogueOptions, setDialogueOptions] = useState<LbInstance[]>([]);
 
   const handleDialogueClose = () =>{
-    console.log("handleDialogueClose")
-    console.log(susInfoState[0]);
     setDialogueOpen(false);
   }
   const setOptionsAndOpen = (lbInstances: LbInstance[]) => {
-    console.log("setoptionsandOpen input");
-    console.log(lbInstances);
     setDialogueOptions(lbInstances);
-    console.log("setoptionsandOpen");
-    console.log(dialogueOptions);
     setDialogueOpen(true);
   }
-
-  console.log("SusPage blocks " + blocks + ", kws" + kws);
-  console.log(blocks);
-  console.log(kws);
-  console.log(susInfoState[0].lbInstances);
 
   const slotRows = blocks.map((block: Block) => (
     {

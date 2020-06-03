@@ -19,7 +19,6 @@ export const LpPage = () => {
 
   const handleChange = (event: React.ChangeEvent<{}>, newValue: number) => {
     setTabState(newValue);
-    console.log(tabState);
   };
   
   return (
