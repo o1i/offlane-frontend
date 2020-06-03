@@ -2,6 +2,7 @@ import React, {useState} from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import { KwItem } from  './KwItem';
 import { SusInfo, Block, Kw, LbInstance } from "../common/objects";
+import { getStart } from "../common/functions";
 import { getWeek } from "../common/functions";
 import Grid from '@material-ui/core/Grid';
 import { OneSlot } from "./OneSlot";
@@ -24,22 +25,33 @@ export const SusPage = ({blocks, kws, lbInstances, susInfoState}: {blocks: Block
   const classes = useStyles();
 
   const [dialogueOpen, setDialogueOpen] = useState(false);
-  const [dialogueOptions, setDialogueOptions] = useState([] as LbInstance[]);
+  const [dialogueOptions, setDialogueOptions] = useState<LbInstance[]>([]);
 
   const handleDialogueClose = () =>{
+    console.log("handleDialogueClose")
+    console.log(susInfoState[0]);
     setDialogueOpen(false);
   }
   const setOptionsAndOpen = (lbInstances: LbInstance[]) => {
+    console.log("setoptionsandOpen input");
+    console.log(lbInstances);
     setDialogueOptions(lbInstances);
+    console.log("setoptionsandOpen");
+    console.log(dialogueOptions);
     setDialogueOpen(true);
   }
+
+  console.log("SusPage blocks " + blocks + ", kws" + kws);
+  console.log(blocks);
+  console.log(kws);
+  console.log(susInfoState[0].lbInstances);
 
   const slotRows = blocks.map((block: Block) => (
     {
       block: block,
       lbInstances: kws.map((kw) => (
-        lbInstances.find((lbInstance) => (getWeek(new Date(lbInstance.start)) === kw.index) && (lbInstance.lb.block.id === block.id)) ?? 
-        {lb: {name: "Unbelegt", lehrer: "", ort: "", block: {id: block.id}}, status: "open", id: -1} as LbInstance
+        susInfoState[0].lbInstances.find((lbInstance) => (getWeek(new Date(lbInstance.start * 1000)) === kw.index) && (lbInstance.lb.block.id === block.id)) || 
+        {lb: {name: "Unbelegt", lehrer: "", ort: "", block: {id: block.id}}, status: "open", id: -1, start: getStart(block.weekDay, block.start, kw.index)} as LbInstance
       ))
     }
   ))

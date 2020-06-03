@@ -57,23 +57,18 @@ const App = () => {
     const [switchLp, setSwitchLp] = useState(false);
     const switchSusLp = () => {
         setSwitchLp(!switchLp)
-        console.log("switchLp is now " + switchLp)
         setUser({id: -1, type: (switchLp ? "lp" : "sus")})
     };
 
     // SuS
-    const [susInfo, setSusInfo] = useState({slots: [], kws: [], lbInstances: []});
+    const [susInfo, setSusInfo] = useState({blocks: [], kws: [], lbInstances: []});
 
     // Lp
     const [lpInfo, setLpInfo] = useState({});
 
 
     useEffect(()=>{
-        console.log("enrolments");
-        console.log(getEnrolments(user));
         setSusInfo(getEnrolments(user));
-        console.log("showing susinfo");
-        console.log(susInfo);
     }, []);
 
 
