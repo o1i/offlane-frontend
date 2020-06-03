@@ -1,6 +1,6 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import {SlotRow, LbInstance } from "../common/objects";
+import {SlotRow, LbInstance ,Wochentage } from "../common/objects";
 import Grid from '@material-ui/core/Grid';
 import { InstanceEnrolment } from "./InstanceEnrolment";
 import Box from '@material-ui/core/Box';
@@ -28,7 +28,7 @@ export const OneSlot = ({slotRow, optionSetter}: {slotRow: SlotRow, optionSetter
       <Grid item xs={1} className={classes.slot}>
           <Box>
             <div>
-                <div>{block.weekDay}</div>
+                <div>{Wochentage[block.weekDay % 7]}</div>
                 <div>{block.start}-{block.end}</div>
             </div>
           </Box>
