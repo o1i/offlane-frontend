@@ -3,8 +3,8 @@ import { makeStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
-//import { ApLbPage } from "./ApLbPage";
-//import { ApPersPage } from "./ApPersPage";
+import { ApStundenplanPage } from "./ApStundenplanPage";
+import { ApPeoplePage } from "./ApPeoplePage";
 
 const useStyles = makeStyles({
   selectorTab: {
@@ -30,14 +30,13 @@ export const ApPage = () => {
                 textColor="primary"
                 onChange={handleChange}
             >
-                <Tab label="Lernbüros"/>
+                <Tab label="Stundenplan"/>
                 <Tab label="Personen"/>
             </Tabs>
         </Paper>
-        
+        {(tabState === 0) && <ApStundenplanPage/>}
+        {(tabState === 1) && <ApPeoplePage/>}
     </>
   );
 }
 
-//{(tabState === 0) && <ApLbPage/>}
-//{(tabState === 1) && <ApPersPage/>}
