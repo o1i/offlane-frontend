@@ -51,7 +51,7 @@ const useStyles = makeStyles({
 export const InstanceEnrolment = ({lbInstance, optionSetter}: {lbInstance: LbInstance, optionSetter: (lbInstances: LbInstance[]) => void}) => {
   const classes = useStyles();
 
-  const {lb, status, current, start, id} = lbInstance;
+  const {lb, status, start} = lbInstance;
   const kw = getWeek(new Date(start * 1000));
 
   const locked = (status === "expired" || status === "forced") ? true : false;

@@ -1,63 +1,31 @@
 import React, { useState, useEffect } from 'react';
+import { makeStyles } from '@material-ui/core/styles';
 import ReactDOM from "react-dom";
 import { SusPage } from "./sus/SusPage";
 import { LpPage } from "./lp/LpPage";
+import { ApPage } from "./ap/ApPage";
 import { getEnrolments } from "./sus/susApi";
-
-import { withStyles, Theme, createStyles } from '@material-ui/core/styles';
-import { purple } from '@material-ui/core/colors';
-import FormGroup from '@material-ui/core/FormGroup';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Switch, { SwitchClassKey, SwitchProps } from '@material-ui/core/Switch';
-import Grid from '@material-ui/core/Grid';
-import Typography from '@material-ui/core/Typography';
-
-const AntSwitch = withStyles((theme) =>
-  createStyles({
-    root: {
-      width: 28,
-      height: 16,
-      padding: 0,
-      display: 'flex',
-    },
-    switchBase: {
-      padding: 2,
-      color: theme.palette.grey[500],
-      '&$checked': {
-        transform: 'translateX(12px)',
-        color: theme.palette.common.white,
-        '& + $track': {
-          opacity: 1,
-          backgroundColor: theme.palette.primary.main,
-          borderColor: theme.palette.primary.main,
-        },
-      },
-    },
-    thumb: {
-      width: 12,
-      height: 12,
-      boxShadow: 'none',
-    },
-    track: {
-      border: `1px solid ${theme.palette.grey[500]}`,
-      borderRadius: 16 / 2,
-      opacity: 1,
-      backgroundColor: theme.palette.common.white,
-    },
-    checked: {},
-  }),
-)(Switch);
+import Paper from '@material-ui/core/Paper';
+import Tabs from '@material-ui/core/Tabs';
+import Tab from '@material-ui/core/Tab';
 
 
 export const UserContext = React.createContext();
 
-const App = () => {
+const useStyles = makeStyles({
+  selectorTab: {
+    "margin-bottom": 10
+  }
+});
 
+const App = () => {
+    const classes = useStyles();
     const [user, setUser] = useState({id: -1, type: "lp"});
-    const [switchLp, setSwitchLp] = useState(false);
-    const switchSusLp = () => {
-        setSwitchLp(!switchLp)
-        setUser({id: -1, type: (switchLp ? "lp" : "sus")})
+    const [tabState, setTabState] = useState(0)
+    const handleChange = (event, newValue) => {
+      setTabState(newValue);
+      const types = ["sus", "lp", "ap"]
+      setUser({id: -1, type: types[newValue]});
     };
 
     // SuS
@@ -69,27 +37,31 @@ const App = () => {
 
     useEffect(()=>{
         setSusInfo(getEnrolments(user));
-    }, []);
+    }, [user]);
 
 
     return(
         <UserContext.Provider value={user}>
-            <FormGroup>
-                <Typography component="div">
-                <Grid component="label" container alignItems="center" spacing={1}>
-                    <Grid item>Lp</Grid>
-                    <Grid item>
-                    <AntSwitch checked={switchLp} onChange={switchSusLp} name="susLpSwitch" />
-                    </Grid>
-                    <Grid item>SuS</Grid>
-                </Grid>
-                </Typography>
-            </FormGroup>
+            <Paper square className={classes.selectorTab}>
+                <Tabs
+                    value={tabState}
+                    indicatorColor="primary"
+                    textColor="primary"
+                    onChange={handleChange}
+                >
+                    <Tab label="SuS"/>
+                    <Tab label="LP"/>
+                    <Tab label="AP"/>
+                </Tabs>
+            </Paper> 
             {user.type === "sus" && 
                 <SusPage {...susInfo} susInfoState={[susInfo, setSusInfo]}/>
             }
             {user.type === "lp" &&
                 <LpPage {...lpInfo} /> 
+            }
+            {user.type === "ap" &&
+                <ApPage/> 
             }
         </UserContext.Provider>
     );
