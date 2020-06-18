@@ -73,6 +73,9 @@ export const ApStundenplanPage = () => {
 
     const handleDeleteGruppe = (id:number) => {
         setGruppen(gruppen.filter(g => !(g.id === id)))
+        if(selectedGroup.id === id){
+            setSelectedGroup({id: -1, name: ""})
+        }
     }
 
     //Blocks
