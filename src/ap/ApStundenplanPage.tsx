@@ -52,6 +52,12 @@ const useStyles = makeStyles((theme: Theme) =>
             marginLeft: theme.spacing(1),
             marginRight: theme.spacing(1),
         },
+        LbColumn: {
+            maxWidth: 460,
+        },
+        GruppenColumn:  {
+            minWidth: 260,
+        },
 }));
 
 export const ApStundenplanPage = () => {
@@ -135,7 +141,7 @@ export const ApStundenplanPage = () => {
     return (
         <Grid container spacing={2} direction="row" justify="flex-start" align-items="flex-start" wrap="nowrap" className={classes.main}>
 
-            <Grid item container spacing={0} direction="column" md={2}>
+            <Grid item container spacing={0} direction="column" md={2} className={classes.GruppenColumn}>
                 <Grid item >
                     <Typography>
                         <Box className={classes.spaltenTitel}>
@@ -173,10 +179,10 @@ export const ApStundenplanPage = () => {
                             Stundenplan {selectedGroup ? selectedGroup.name : ""}
                         </Box>
                     </Typography>
-                    <Stundenplan blocks={blocks}/>
+                    <Stundenplan blocks={blocks} chosenBlock={chosenBlock} setChosenBlock={setChosenBlock}/>
             </Grid>
 
-            <Grid item container spacing={0} direction="column" justify="flex-start" md={5} align-items="stretch">
+            <Grid item container spacing={0} direction="column" justify="flex-start" md={5} align-items="stretch" className={classes.LbColumn}>
                 <Grid item>
                     <Typography>
                         <Box className={classes.spaltenTitel}>

@@ -26,6 +26,9 @@ const useStyles = makeStyles({
   },
   newSoft: {
     width: 50,
+  },
+  addLb: {
+    maxWidth: 300,
   }
 });
 
@@ -52,7 +55,7 @@ export const ApLbList = ({lbs, block, setLbs}: {lbs: Lernbuero[], block: Block, 
             <ListItemText primary={lb.name} secondary={lb.lehrer + ", " + lb.ort + " (" + lb.soft + ")"}></ListItemText>
         </ListItem>
         )}
-        <ListItem button>
+        <ListItem className={classes.addLb}>
           <ListItemText primary={<TextField placeholder="Name" value={lbName} onChange={e => setLbName(e.target.value)}/>} secondary={
             <span>
             <TextField placeholder="Lehrpers." size="small" value={lbLehrer} onChange={e => setLbLehrer(e.target.value)} className={classes.newName}/>
@@ -62,7 +65,7 @@ export const ApLbList = ({lbs, block, setLbs}: {lbs: Lernbuero[], block: Block, 
             }/>
             <ListItemSecondaryAction>
               <IconButton aria-label="Add Lernbuero" onClick={handleAddLernbuero}>
-                <AddBoxIcon  fontSize="small"/>
+                <AddBoxIcon/>
               </IconButton>
             </ListItemSecondaryAction>
         </ListItem>
