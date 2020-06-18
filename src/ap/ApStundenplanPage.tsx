@@ -5,10 +5,11 @@ import Grid from '@material-ui/core/Grid';
 import Box from '@material-ui/core/Box';
 import Typography from '@material-ui/core/Typography';
 import TextField from '@material-ui/core/TextField';
-import IconButton from '@material-ui/core/IconButton';
 import AddBoxIcon from '@material-ui/icons/AddBox';
+import { ListItemSecondaryAction, IconButton } from '@material-ui/core';
 import EditIcon from '@material-ui/icons/Edit';
 import SaveIcon from '@material-ui/icons/Save';
+import DeleteIcon from '@material-ui/icons/Delete';
 import List from '@material-ui/core/List';
 import ListItem, { ListItemProps } from '@material-ui/core/ListItem';
 import { getGruppen, addGruppe, getBlocks, addBlock, changeBlock, getLbs } from "./ApApi";
@@ -68,6 +69,10 @@ export const ApStundenplanPage = () => {
             setGruppen(addGruppe(gruppen, gruppenName));
             setGruppenName("");
         }
+    }
+
+    const handleDeleteGruppe = (id:number) => {
+        setGruppen(gruppen.filter(g => !(g.id === id)))
     }
 
     //Blocks
@@ -138,7 +143,13 @@ export const ApStundenplanPage = () => {
                 <List>
                     {gruppen.map((g, key=g.id) => {
                         return(
-                            <ListItem button key={g.id} onClick={(e) => setSelectedGroup(g)}>{g.name}</ListItem>
+                            <ListItem button key={g.id} onClick={(e) => setSelectedGroup(g)}>{g.name}
+                                <ListItemSecondaryAction>
+                                    <IconButton aria-label="Remove Gruppe" onClick={e => handleDeleteGruppe(g.id)}>
+                                        <DeleteIcon  fontSize="small"/>
+                                    </IconButton>
+                                </ListItemSecondaryAction>
+                            </ListItem>
                         )
                     })}
                 </List>
