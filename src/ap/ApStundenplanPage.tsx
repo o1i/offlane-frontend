@@ -173,7 +173,7 @@ export const ApStundenplanPage = () => {
                     <Stundenplan blocks={blocks}/>
             </Grid>
 
-            <Grid item container spacing={0} direction="column" justify="flex-start" md={3} align-items="stretch">
+            <Grid item container spacing={0} direction="column" justify="flex-start" md={5} align-items="stretch">
                 <Grid item>
                     <Typography>
                         <Box className={classes.spaltenTitel}>

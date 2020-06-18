@@ -17,6 +17,7 @@ const useStyles = makeStyles({
  timeSlot: {
     "flex-grow": 1,
     position: "relative",
+    minWidth: 55,
 },
 timeBox: {
     "border-top": "1px solid black",
