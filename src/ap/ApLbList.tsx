@@ -64,7 +64,7 @@ export const ApLbList = ({lbs, block, setLbs}: {lbs: Lernbuero[], block: Block, 
             </span>
             }/>
             <ListItemSecondaryAction>
-              <IconButton aria-label="Add Lernbuero" onClick={handleAddLernbuero}>
+              <IconButton aria-label="Add Lernbuero" onClick={handleAddLernbuero} disabled={!(block.id>0)}>
                 <AddBoxIcon/>
               </IconButton>
             </ListItemSecondaryAction>

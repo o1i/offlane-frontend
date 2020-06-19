@@ -6,7 +6,8 @@ export const getGruppen = () => {
 }
 
 export const addGruppe = (gruppen: Gruppe[], neu: string) => {
-    gruppen.push({id: Math.max(...gruppen.map(g => g.id)) + 1, name: neu} as Gruppe)
+    const prevMax = gruppen.length > 1 ? Math.max(...gruppen.map(g => g.id)) : 0;
+    gruppen.push({id: prevMax + 1, name: neu} as Gruppe)
     return(gruppen)
 }
 

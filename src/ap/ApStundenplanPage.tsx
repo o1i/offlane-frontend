@@ -119,9 +119,10 @@ export const ApStundenplanPage = () => {
         }
         console.log(blocks);
         setBlocksEditable(false);
+        setAddingBlock(false);
     }
 
-
+    useEffect(() => setChosenBlock({} as Block), [selectedGroup])
 
     //Lbs
     const [chosenBlock, setChosenBlock] = useState<Block>({} as Block);
@@ -133,9 +134,6 @@ export const ApStundenplanPage = () => {
 
     useEffect(() => setAllLbs(getLbs()), [])
     useEffect(() => setLbs(allLbs.filter(x => x.block.id === chosenBlock.id)), [chosenBlock])
-
-    
-
 
     
     return (
@@ -217,14 +215,14 @@ export const ApStundenplanPage = () => {
                                 disabled={!blocksEditable}
                             />
 
-                            <IconButton aria-label="Add Group" onClick={handleAddBlock}>
+                            <IconButton aria-label="Add Group" onClick={handleAddBlock} disabled={!(selectedGroup.id>0)}>
                                 <AddBoxIcon  fontSize="small"/>
                             </IconButton>
                             {blocksEditable ? 
-                             <IconButton aria-label="Edit Group" onClick={handleSaveBlock}>
+                             <IconButton aria-label="Save Group" onClick={handleSaveBlock} disabled={!(addingBlock || blocksEditable)}>
                                 <SaveIcon fontSize="small"/>
                             </IconButton>:
-                            <IconButton aria-label="Edit Group" onClick={handleEditBlock}>
+                            <IconButton aria-label="Edit Group" onClick={handleEditBlock} disabled={!(chosenBlock.id>0)}>
                                  <EditIcon fontSize="small"/>
                             </IconButton>}
                         </Box>
