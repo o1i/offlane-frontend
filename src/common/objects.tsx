@@ -5,7 +5,7 @@ export interface Lernbuero {name: string, lehrer: string, ort: string, soft: num
 
 export interface LbInstance {lb: Lernbuero, status: LbStatus, current: number, start: number, id: number};
 type UserType = "sus" | "lp" | "ap"
-export interface User {id: number, type: UserType, name: string};
+export interface User {id: number, type: UserType, name: string, password: string};
 type LbStatus = "open" | "forced" | "enrolled" |"expired"
 export interface SlotRow {block: Block, lbInstances: LbInstance[]};
 export interface SusInfo {blocks: Block[], kws: Kw[], lbInstances: LbInstance[]};

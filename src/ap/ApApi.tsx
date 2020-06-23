@@ -1,4 +1,4 @@
-import { Gruppe, Block, Lernbuero } from "../common/objects";
+import { Gruppe, Block, Lernbuero, User } from "../common/objects";
 
 // Gruppen
 export const getGruppen = () => {
@@ -41,4 +41,15 @@ export const addLb = (newLb: Lernbuero, lbs: Lernbuero[]) => {
     newLb.id = oldMax + 1;
     lbs.push(newLb);
     return(lbs);
+}
+
+//Lps
+export const getAllLps = () => {
+    return([
+        {name: "Böni", id:1, password:"foo", type: "lp"} as User,
+        {name: "Böni2", id:5, password:"foo2", type: "lp"} as User,
+        {name: "Böni3", id:21, password:"foo3", type: "lp"} as User,
+        {name: "Böni4", id:4, password:"foo4", type: "lp"} as User,
+        {name: "Böni5", id:2, password:"foo5", type: "lp"} as User,
+    ])
 }
