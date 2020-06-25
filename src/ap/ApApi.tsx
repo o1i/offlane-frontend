@@ -53,3 +53,7 @@ export const getAllLps = () => {
         {name: "Böni5", id:2, password:"foo5", type: "lp"} as User,
     ])
 }
+
+export const addLp = (lps: User[], oldLps: User[], setLps: (lps: User[]) => void) =>{
+    
+}
