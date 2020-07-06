@@ -55,5 +55,21 @@ export const getAllLps = () => {
 }
 
 export const addLp = (lps: User[], oldLps: User[], setLps: (lps: User[]) => void) =>{
-    
+    setLps(oldLps.concat(lps).sort(
+        (u, v) => {if (u.name.toLowerCase() > v.name.toLowerCase()){
+            return 1;
+        }else{
+            return -1;
+        }}));
+}
+
+//Sus
+export const getAllSus = () => {
+    return([
+        {name: "MiniBöni", id:1, password:"foo", type: "sus", gruppe:"2. Stufe"} as User,
+        {name: "MiniBöni2", id:5, password:"foo2", type: "sus", gruppe:"2. Stufe"} as User,
+        {name: "MiniBöni3", id:21, password:"foo3", type: "sus", gruppe:"2. Stufe"} as User,
+        {name: "MiniBöni4", id:4, password:"foo4", type: "sus", gruppe:"2. Stufe"} as User,
+        {name: "MiniBöni5", id:2, password:"foo5", type: "sus", gruppe:"2. Stufe"} as User,
+    ])
 }
