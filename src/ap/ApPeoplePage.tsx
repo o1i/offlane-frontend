@@ -24,13 +24,24 @@ import { User } from "../common/objects";
 import { getAllLps, getAllSus, addLp, deleteUser } from "./ApApi";
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
+import { ListItemSecondaryAction } from '@material-ui/core';
+import List from '@material-ui/core/List';
+import ListItem from '@material-ui/core/ListItem';
+import ListItemText from '@material-ui/core/ListItemText';
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
     lpButton: {
     },
     theGrid:  {
-      padding: 5,
+      padding: 15,
+    },
+    userListPrimary: {
+      display: "inline",
+    },
+    userListSecondary: {
+      display: "inline",
+      paddingLeft: "10px"
     },
   }));
 
@@ -136,22 +147,15 @@ export const ApPeoplePage = () => {
       {/*LP Table*/}
         <Grid md={2} className={classes.theGrid}>
             <Typography variant="h5">Lehrer</Typography>
-            <Table size="small">
-                <TableHead>
-                    <TableRow>
-                        <TableCell> Kürzel</TableCell>
-                        <TableCell> Passwort</TableCell>
-                    </TableRow>
-                </TableHead>
-                <TableBody>
+            <List>
                   {lps.map((u: User) => 
-                    <TableRow hover onClick={(e) => handleLpClick(u)}>
-                      <TableCell>{u.name}</TableCell>
-                      <TableCell>{u.password}</TableCell>
-                      <IconButton onClick={e => {deleteUser(u, lps, setLps); setKuerzelState(""); setPwState("");}}><DeleteIcon/></IconButton>
-                    </TableRow>)}
-                </TableBody>
-            </Table>
+                    <ListItem button onClick={(e) => handleLpClick(u)}>
+                      <ListItemText classes={{primary: classes.userListPrimary, secondary: classes.userListSecondary}} primary={u.name} secondary={u.password}></ListItemText>
+                      <ListItemSecondaryAction>
+                        <IconButton onClick={e => {deleteUser(u, lps, setLps); setKuerzelState(""); setPwState("");}}><DeleteIcon/></IconButton>
+                      </ListItemSecondaryAction>
+                    </ListItem>)}
+            </List>
         </Grid>
 
       {/*LP Input*/}
