@@ -41,7 +41,7 @@ const useStyles = makeStyles((theme: Theme) =>
     },
     userListSecondary: {
       display: "inline",
-      paddingLeft: "10px"
+      paddingLeft: "10px",
     },
   }));
 
@@ -150,7 +150,11 @@ export const ApPeoplePage = () => {
             <List>
                   {lps.map((u: User) => 
                     <ListItem button onClick={(e) => handleLpClick(u)}>
-                      <ListItemText classes={{primary: classes.userListPrimary, secondary: classes.userListSecondary}} primary={u.name} secondary={u.password}></ListItemText>
+                      <ListItemText 
+                        classes={{primary: classes.userListPrimary, secondary: classes.userListSecondary}} 
+                        primaryTypographyProps={{color: "primary", variant:"subtitle2"}}
+                        primary={u.name} 
+                        secondary={u.password}></ListItemText>
                       <ListItemSecondaryAction>
                         <IconButton onClick={e => {deleteUser(u, lps, setLps); setKuerzelState(""); setPwState("");}}><DeleteIcon/></IconButton>
                       </ListItemSecondaryAction>
@@ -174,6 +178,7 @@ export const ApPeoplePage = () => {
                     <ListItem button onClick={(e) => handleSusClick(u)}>
                       <ListItemText 
                         classes={{primary: classes.userListPrimary, secondary: classes.userListSecondary}} 
+                        primaryTypographyProps={{color: "primary", variant:"subtitle2"}}
                         primary={u.name}
                         secondary={u.gruppe + ", " + u.password}
                         />
