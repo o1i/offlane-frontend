@@ -73,3 +73,8 @@ export const getAllSus = () => {
         {name: "MiniBöni5", id:2, password:"foo5", type: "sus", gruppe:"2. Stufe"} as User,
     ])
 }
+
+//user
+export const deleteUser = (user: User, old: User[], setter: (users: User[]) => void) => {
+    setter(old.filter(u => u.id != user.id));
+}

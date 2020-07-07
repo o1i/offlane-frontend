@@ -21,7 +21,7 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import FilterListIcon from '@material-ui/icons/FilterList';
 import Grid from '@material-ui/core/Grid';
 import { User } from "../common/objects";
-import { getAllLps, getAllSus, addLp } from "./ApApi";
+import { getAllLps, getAllSus, addLp, deleteUser } from "./ApApi";
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 
@@ -120,6 +120,17 @@ export const ApPeoplePage = () => {
     }
   }
 
+  const handleLpClick = (lp: User) =>{
+    setKuerzelState(lp.name);
+    setPwState(lp.password);
+  }
+
+  const handleSusClick = (sus: User) =>{
+    setSusKuerzelState(sus.name);
+    setSusGruppe(sus.gruppe);
+    setSusPwState(sus.password);
+  }
+
   return(
     <Grid container spacing={3}>
       {/*LP Table*/}
@@ -134,9 +145,10 @@ export const ApPeoplePage = () => {
                 </TableHead>
                 <TableBody>
                   {lps.map((u: User) => 
-                    <TableRow hover>
+                    <TableRow hover onClick={(e) => handleLpClick(u)}>
                       <TableCell>{u.name}</TableCell>
                       <TableCell>{u.password}</TableCell>
+                      <IconButton onClick={e => {deleteUser(u, lps, setLps); setKuerzelState(""); setPwState("");}}><DeleteIcon/></IconButton>
                     </TableRow>)}
                 </TableBody>
             </Table>
@@ -163,10 +175,11 @@ export const ApPeoplePage = () => {
                 </TableHead>
                 <TableBody>
                   {sus.map((u: User) => 
-                    <TableRow hover>
+                    <TableRow hover onClick={(e) => handleSusClick(u)}>
                       <TableCell>{u.name}</TableCell>
                       <TableCell>{u.password}</TableCell>
                       <TableCell>{u.gruppe}</TableCell>
+                      <IconButton onClick={e => {deleteUser(u, sus, setSus);setSusKuerzelState("");setSusGruppe("");setSusPwState("");}}><DeleteIcon/></IconButton>
                     </TableRow>)}
                 </TableBody>
             </Table>
