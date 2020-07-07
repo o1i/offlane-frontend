@@ -169,24 +169,19 @@ export const ApPeoplePage = () => {
     {/*SuS Table*/}
     <Grid md={3} className={classes.theGrid}>
             <Typography variant="h5">SuS</Typography>
-            <Table size="small">
-                <TableHead>
-                    <TableRow>
-                        <TableCell> Name</TableCell>
-                        <TableCell> Passwort</TableCell>
-                        <TableCell> Gruppe</TableCell>
-                    </TableRow>
-                </TableHead>
-                <TableBody>
+            <List>
                   {sus.map((u: User) => 
-                    <TableRow hover onClick={(e) => handleSusClick(u)}>
-                      <TableCell>{u.name}</TableCell>
-                      <TableCell>{u.password}</TableCell>
-                      <TableCell>{u.gruppe}</TableCell>
-                      <IconButton onClick={e => {deleteUser(u, sus, setSus);setSusKuerzelState("");setSusGruppe("");setSusPwState("");}}><DeleteIcon/></IconButton>
-                    </TableRow>)}
-                </TableBody>
-            </Table>
+                    <ListItem button onClick={(e) => handleSusClick(u)}>
+                      <ListItemText 
+                        classes={{primary: classes.userListPrimary, secondary: classes.userListSecondary}} 
+                        primary={u.name}
+                        secondary={u.gruppe + ", " + u.password}
+                        />
+                      <ListItemSecondaryAction>
+                        <IconButton onClick={e => {deleteUser(u, sus, setSus);setSusKuerzelState("");setSusGruppe("");setSusPwState("");}}><DeleteIcon/></IconButton>
+                      </ListItemSecondaryAction>
+                    </ListItem>)}
+            </List>
         </Grid>
 
       {/*SuS Input*/}
