@@ -21,7 +21,7 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import FilterListIcon from '@material-ui/icons/FilterList';
 import Grid from '@material-ui/core/Grid';
 import { User } from "../common/objects";
-import { getAllLps, getAllSus, addLp, deleteUser } from "./ApApi";
+import { getAllLps, getAllSus, addUser, deleteUser } from "./ApApi";
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import { ListItemSecondaryAction } from '@material-ui/core';
@@ -82,6 +82,7 @@ export const ApPeoplePage = () => {
   const [kuerzelState, setKuerzelState] = useState("");
   const [pwState, setPwState] = useState("");
   const [multiKuerzelState, setMultiKuerzelState] = useState("");
+  const [lpId, setLpId] = useState(-1);
 
 
   const [sus, setSus] = useState<User[]>([]);
@@ -89,6 +90,7 @@ export const ApPeoplePage = () => {
   const [susPwState, setSusPwState] = useState("");
   const [susGruppe, setSusGruppe] = useState("");
   const [susMultiKuerzelState, setSusMultiKuerzelState] = useState("");
+  const [susId, setSusId] = useState(-1);
 
   useEffect(() => setLps(getAllLps()), [])
   useEffect(() => setSus(getAllSus()), [])
@@ -96,9 +98,10 @@ export const ApPeoplePage = () => {
   const handleLpUpdate = () => {
     let toAdd: User[] = [];
     if(kuerzelState){
-      toAdd = toAdd.concat([{id: -1, type:"lp", name:kuerzelState, password: pwState ? pwState : makePw(), gruppe: ""}]);
+      toAdd = toAdd.concat([{id: lpId, type:"lp", name:kuerzelState, password: pwState ? pwState : makePw(), gruppe: ""}]);
       setKuerzelState("");
       setPwState("");
+      setLpId(-1);
     }
     if( multiKuerzelState){
       const lines = multiKuerzelState.split(/\r?\n/);
@@ -106,7 +109,7 @@ export const ApPeoplePage = () => {
       setMultiKuerzelState("");
     }
     if (toAdd.length > 0){
-      addLp(toAdd, lps, setLps);
+      addUser(toAdd, lps, setLps);
     }
   }
 
@@ -116,30 +119,34 @@ export const ApPeoplePage = () => {
       console.log(susKuerzelState);
       console.log(susPwState);
       console.log(susGruppe);
-      toAdd = toAdd.concat([{id: -1, type:"sus", name:susKuerzelState, password: susPwState ? susPwState : makePw(), gruppe: susGruppe}]);
+      toAdd = toAdd.concat([{id: susId, type:"sus", name:susKuerzelState, password: susPwState ? susPwState : makePw(), gruppe: susGruppe}]);
       setSusKuerzelState("");
       setSusGruppe("");
       setSusPwState("");
+      setSusId(-1);
     }
-    if( susMultiKuerzelState){
+    if (susMultiKuerzelState){
       const lines = susMultiKuerzelState.split(/\r?\n/);
       toAdd = toAdd.concat(lines.filter(l => l).map(l => susFromLine(l)).filter(s => s.type && s.name && s.password && s.gruppe));
       setSusMultiKuerzelState("");
     }
     if (toAdd.length > 0){
-      addLp(toAdd, sus, setSus);
+      addUser(toAdd, sus, setSus);
     }
   }
 
   const handleLpClick = (lp: User) =>{
     setKuerzelState(lp.name);
     setPwState(lp.password);
+    setLpId(lp.id);
+    console.log(lps);
   }
 
   const handleSusClick = (sus: User) =>{
     setSusKuerzelState(sus.name);
     setSusGruppe(sus.gruppe);
     setSusPwState(sus.password);
+    setSusId(sus.id);
   }
 
   return(
@@ -156,7 +163,7 @@ export const ApPeoplePage = () => {
                         primary={u.name} 
                         secondary={u.password}></ListItemText>
                       <ListItemSecondaryAction>
-                        <IconButton onClick={e => {deleteUser(u, lps, setLps); setKuerzelState(""); setPwState("");}}><DeleteIcon/></IconButton>
+                        <IconButton onClick={e => {deleteUser(u, lps, setLps); setKuerzelState(""); setPwState(""); setLpId(-1);}}><DeleteIcon/></IconButton>
                       </ListItemSecondaryAction>
                     </ListItem>)}
             </List>
@@ -183,7 +190,7 @@ export const ApPeoplePage = () => {
                         secondary={u.gruppe + ", " + u.password}
                         />
                       <ListItemSecondaryAction>
-                        <IconButton onClick={e => {deleteUser(u, sus, setSus);setSusKuerzelState("");setSusGruppe("");setSusPwState("");}}><DeleteIcon/></IconButton>
+                        <IconButton onClick={e => {deleteUser(u, sus, setSus);setSusKuerzelState("");setSusGruppe("");setSusPwState(""); setSusId(-1);}}><DeleteIcon/></IconButton>
                       </ListItemSecondaryAction>
                     </ListItem>)}
             </List>

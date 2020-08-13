@@ -4,6 +4,7 @@ import ReactDOM from "react-dom";
 import { SusPage } from "./sus/SusPage";
 import { LpPage } from "./lp/LpPage";
 import { ApPage } from "./ap/ApPage";
+import { AuthDialog } from "./auth/auth";
 import { getEnrolments } from "./sus/susApi";
 import Paper from '@material-ui/core/Paper';
 import Tabs from '@material-ui/core/Tabs';
@@ -21,6 +22,8 @@ const useStyles = makeStyles({
 const App = () => {
     const classes = useStyles();
     const [user, setUser] = useState({id: -1, type: "lp"});
+    const [userLevel, setUserLevel] = useState("")
+    const [token, setToken] = useState("")
     const [tabState, setTabState] = useState(0)
     const handleChange = (event, newValue) => {
       setTabState(newValue);
@@ -39,9 +42,12 @@ const App = () => {
         setSusInfo(getEnrolments(user));
     }, [user]);
 
+    console.log(token);
+    console.log(userLevel);
 
     return(
         <UserContext.Provider value={user}>
+            <AuthDialog setToken={setToken} authShow={userLevel==""} setUserLevel={setUserLevel}/>
             <Paper square className={classes.selectorTab}>
                 <Tabs
                     value={tabState}

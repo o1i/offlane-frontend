@@ -54,8 +54,19 @@ export const getAllLps = () => {
     ])
 }
 
-export const addLp = (lps: User[], oldLps: User[], setLps: (lps: User[]) => void) =>{
-    setLps(oldLps.concat(lps).sort(
+export const addUser = (users: User[], oldUsers: User[], setUsers: (users: User[]) => void) =>{
+    const untouchedOld = oldUsers.filter(lp_old => users.map(lp_new=>lp_new.id).indexOf(lp_old.id) < 0);
+    let oldIdMax = Math.max(...oldUsers.map(lp => lp.id));
+    const usersWithId = users.map(u => {
+        if (u.id < 0){
+            oldIdMax += 1;
+            u.id = oldIdMax;
+            return(u);
+        }else{
+            return(u);
+        }
+    })
+    setUsers(untouchedOld.concat(usersWithId).sort(
         (u, v) => {if (u.name.toLowerCase() > v.name.toLowerCase()){
             return 1;
         }else{
