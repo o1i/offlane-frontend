@@ -42,11 +42,15 @@ const App = () => {
         setSusInfo(getEnrolments(user));
     }, [user]);
 
+
+    const logOut = () => {setUserLevel("");}
+
     console.log(token);
     console.log(userLevel);
 
     return(
         <UserContext.Provider value={user}>
+            <div align="right" onClick={logOut}>Log Out</div>
             <AuthDialog setToken={setToken} authShow={userLevel==""} setUserLevel={setUserLevel}/>
             <Paper square className={classes.selectorTab}>
                 <Tabs
