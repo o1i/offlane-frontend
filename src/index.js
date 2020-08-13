@@ -25,11 +25,6 @@ const App = () => {
     const [userLevel, setUserLevel] = useState("")
     const [token, setToken] = useState("")
     const [tabState, setTabState] = useState(0)
-    const handleChange = (event, newValue) => {
-      setTabState(newValue);
-      const types = ["sus", "lp", "ap"]
-      setUser({id: -1, type: types[newValue]});
-    };
 
     // SuS
     const [susInfo, setSusInfo] = useState({blocks: [], kws: [], lbInstances: []});
@@ -52,25 +47,13 @@ const App = () => {
         <UserContext.Provider value={user}>
             <div align="right" onClick={logOut}>Log Out</div>
             <AuthDialog setToken={setToken} authShow={userLevel==""} setUserLevel={setUserLevel}/>
-            <Paper square className={classes.selectorTab}>
-                <Tabs
-                    value={tabState}
-                    indicatorColor="primary"
-                    textColor="primary"
-                    onChange={handleChange}
-                >
-                    <Tab label="SuS"/>
-                    <Tab label="LP"/>
-                    <Tab label="AP"/>
-                </Tabs>
-            </Paper> 
-            {user.type === "sus" && 
+            {userLevel === "sus" && 
                 <SusPage {...susInfo} susInfoState={[susInfo, setSusInfo]}/>
             }
-            {user.type === "lp" &&
+            {userLevel === "lp" &&
                 <LpPage {...lpInfo} /> 
             }
-            {user.type === "ap" &&
+            {userLevel === "ap" &&
                 <ApPage/> 
             }
         </UserContext.Provider>
