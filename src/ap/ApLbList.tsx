@@ -41,7 +41,7 @@ export const ApLbList = ({lbs, block, setLbs}: {lbs: Lernbuero[], block: Block, 
   const [lbSoft, setLbSoft] = useState(15);
 //export interface Lernbuero {name: string, lehrer: string, ort: string, soft: number, hard: number, block: Block, id: number};
   const handleAddLernbuero = () => {
-    setLbs(addLb({name: lbName, lehrer: lbLehrer, ort: lbOrt, soft: lbSoft, hard: lbSoft + 5, block: block, id: -1} as Lernbuero, lbs));
+    setLbs(addLb({name: lbName, lehrer: lbLehrer, ort: lbOrt, soft: lbSoft, hard: lbSoft + 5, block_id: block.id, id: -1} as Lernbuero, lbs));
     setLbName("");
     setLbLehrer("");
     setLbOrt("");

@@ -1,6 +1,6 @@
 export interface Gruppe {name: string, id: number};
 export interface Block {weekDay: number, start: string, end: string, gruppe: Gruppe, id: number}
-export interface Lernbuero {name: string, lehrer: string, ort: string, soft: number, hard: number, block: Block, id: number};
+export interface Lernbuero {name: string, lehrer: string, ort: string, soft: number, hard: number, block: Block, block_id: number, id: number};
 
 
 export interface LbInstance {lb: Lernbuero, status: LbStatus, current: number, start: number, id: number};

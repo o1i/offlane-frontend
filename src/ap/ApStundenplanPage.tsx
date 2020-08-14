@@ -133,7 +133,7 @@ export const ApStundenplanPage = () => {
     //export interface Lernbuero {name: string, lehrer: string, ort: string, soft: number, hard: number, block: Block, id: number};
 
     useEffect(() => setAllLbs(getLbs()), [])
-    useEffect(() => setLbs(allLbs.filter(x => x.block.id === chosenBlock.id)), [chosenBlock])
+    useEffect(() => setLbs(allLbs.filter(x => x.block_id === chosenBlock.id)), [chosenBlock])
 
     
     return (

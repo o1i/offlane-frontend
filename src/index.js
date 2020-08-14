@@ -6,9 +6,6 @@ import { LpPage } from "./lp/LpPage";
 import { ApPage } from "./ap/ApPage";
 import { AuthDialog } from "./auth/auth";
 import { getEnrolments } from "./sus/susApi";
-import Paper from '@material-ui/core/Paper';
-import Tabs from '@material-ui/core/Tabs';
-import Tab from '@material-ui/core/Tab';
 
 
 export const UserContext = React.createContext();
@@ -26,17 +23,8 @@ const App = () => {
     const [token, setToken] = useState("")
     const [tabState, setTabState] = useState(0)
 
-    // SuS
-    const [susInfo, setSusInfo] = useState({blocks: [], kws: [], lbInstances: []});
-
     // Lp
     const [lpInfo, setLpInfo] = useState({});
-
-
-    useEffect(()=>{
-        setSusInfo(getEnrolments(user));
-    }, [user]);
-
 
     const logOut = () => {setUserLevel("");}
 
@@ -48,7 +36,7 @@ const App = () => {
             <div align="right" onClick={logOut}>Log Out</div>
             <AuthDialog setToken={setToken} authShow={userLevel==""} setUserLevel={setUserLevel}/>
             {userLevel === "sus" && 
-                <SusPage {...susInfo} susInfoState={[susInfo, setSusInfo]}/>
+                <SusPage token={token}/>
             }
             {userLevel === "lp" &&
                 <LpPage {...lpInfo} /> 

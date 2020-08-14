@@ -15,7 +15,7 @@ const useStyles = makeStyles({
     },
   });
 
-export const LbSelectDialog = ({open, onClose, lbInstances, susInfoState}: {open:boolean, onClose: () => void, lbInstances: LbInstance[], susInfoState: [SusInfo, (susInfo: SusInfo) => void]}) => {
+export const LbSelectDialog = ({open, onClose, token, lbInstances, susInfoState}: {open:boolean, token: string, onClose: () => void, lbInstances: LbInstance[], susInfoState: [SusInfo, (susInfo: SusInfo) => void]}) => {
     
     const classes = useStyles();
 
@@ -25,7 +25,7 @@ export const LbSelectDialog = ({open, onClose, lbInstances, susInfoState}: {open
     }
 
     const handleListItemClick = (lbInstance: LbInstance) => {
-        enrol(lbInstance, susInfoState[0], susInfoState[1]);
+        enrol(lbInstance, token, susInfoState[1]);
         onClose();
     }
 

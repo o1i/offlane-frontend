@@ -48,7 +48,7 @@ const useStyles = makeStyles({
   },
 });
 
-export const InstanceEnrolment = ({lbInstance, optionSetter}: {lbInstance: LbInstance, optionSetter: (lbInstances: LbInstance[]) => void}) => {
+export const InstanceEnrolment = ({lbInstance, optionSetter}: {lbInstance: LbInstance, optionSetter: (kw_index: number, block_id: number) => void}) => {
   const classes = useStyles();
 
   const {lb, status, start} = lbInstance;
@@ -56,15 +56,8 @@ export const InstanceEnrolment = ({lbInstance, optionSetter}: {lbInstance: LbIns
 
   const locked = (status === "expired" || status === "forced") ? true : false;
 
-  const handleClick = () => {
-    const options = getEnrolmentOptions(kw, lb.block.id, 1);
-    options.forEach((lbi, index) => lbi.start = lbInstance.start);
-    options.forEach((lbi, index) => lbi.lb.block.id = lb.block.id);
-    optionSetter(options);
-  }
-
   return (
-      <Paper className={`${classes.root} ${classes[status]}`} onClick={handleClick}>
+      <Paper className={`${classes.root} ${classes[status]}`} onClick={e => optionSetter(kw, lb.block_id)}>
           <div>
             <Typography className={classes.lock}><FontAwesomeIcon icon={locked ? faLock : faLockOpen} /></Typography>
           </div>
