@@ -41,7 +41,7 @@ export const LbBelegungRow = ({lbBelegung, token, setState, setDialogUsers, setD
 
     const handleClick = (lbInstance: LbInstance) => {
         setDialogLb(lbInstance);
-        setDialogUsers(getEligibleSus(lbInstance.id));
+        getEligibleSus(lbInstance.id, token, setDialogUsers);
         setDialogState(true);
     }
 
