@@ -30,7 +30,7 @@ export const LpLbPage = ({token}: {token:string}) => {
       {
         lbState.map((oneInstance)=> {
           return(
-            <LbBelegungRow lbBelegung={oneInstance} getState={lbState} setState={setLbState} key={oneInstance[0].lbInstance.id} setDialogUsers={setDialogUsers} setDialogLb={setDialogLb} setDialogState={setDialogState}/>
+            <LbBelegungRow lbBelegung={oneInstance} token={token} setState={setLbState} key={oneInstance[0].lbInstance.id} setDialogUsers={setDialogUsers} setDialogLb={setDialogLb} setDialogState={setDialogState}/>
           );
         })
       }

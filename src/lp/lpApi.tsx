@@ -1,4 +1,5 @@
 import { LbInstance, User } from "../common/objects";
+import { UserContext } from "..";
 //export interface Lernbuero {name: string, lehrer: string, ort: string, soft: number, hard: number, block: number, id: number};
 //export interface Block {weekDay: number, start: string, end: string, gruppe: number, id: number}
 
@@ -10,33 +11,18 @@ export const getLpLbInfo = (token: string, setLpLbInfo: (lpLbInfo: Array<Array<{
     .then(t => setLpLbInfo(t))
 }
 
-export const enrolSus = (lbId: number, theSus: User, getState: {lbInstance: LbInstance, sus: User[]}[][], setState: (enrolState: {lbInstance: LbInstance, sus: User[]}[][]) => void) => {
-    const currentState = getState.map(a=>a);
-    let add = false;
-    currentState.forEach(rowArray => rowArray.forEach(({lbInstance, sus}) => {
-        if(lbInstance.id===lbId){
-            if(!sus.some(user=>user.id === theSus.id)){
-                sus.push(theSus);
-                sus.sort((sus1, sus2) => sus1.name < sus2.name ? -1 : 1);
-                add = true;
-                lbInstance.current = sus.length;
-            }
-        }
-    }))
-    if(add){setState(currentState)};
+export const enrolSus = (lbId: number, sus_id: number, token: string, setLpLbInfo: (lpLbInfo: Array<Array<{lbInstance: LbInstance, sus:Array<User>}>>) => void) => {
+    const url = (process.env.NODE_ENV === 'production' ? process.env.REACT_APP_PROD_URL : process.env.REACT_APP_DEV_URL) + "lp/enrolment/"
+    fetch(url, {method: "post", headers: {'Content-Type': 'application/json', "Authorization": "Bearer " + token}, body: JSON.stringify({"sus_id": sus_id, "lbi_id": lbId, "action": "enrol"})})
+    .then(r => r.ok && r.json())
+    .then(t => setLpLbInfo(t))
 }
 
-
-export const unEnrolSus = (susId: number, lbId: number, getState: {lbInstance: LbInstance, sus: User[]}[][], setState: (enrolState: {lbInstance: LbInstance, sus: User[]}[][]) => void) => {
-    const currentState = getState.map(a=>a);
-    currentState.forEach(rowArray => rowArray.forEach(({lbInstance, sus}) => {
-        if(lbInstance.id===lbId){
-            const toRemove = sus.findIndex(aSus => aSus.id === susId);
-            sus.splice(toRemove, 1);
-            lbInstance.current = sus.length;
-        }
-    }))
-    setState(currentState);
+export const unEnrolSus = (lbId: number, sus_id: number, token: string, setLpLbInfo: (lpLbInfo: Array<Array<{lbInstance: LbInstance, sus:Array<User>}>>) => void) => {
+    const url = (process.env.NODE_ENV === 'production' ? process.env.REACT_APP_PROD_URL : process.env.REACT_APP_DEV_URL) + "lp/enrolment/"
+    fetch(url, {method: "post", headers: {'Content-Type': 'application/json', "Authorization": "Bearer " + token}, body: JSON.stringify({"sus_id": sus_id, "lbi_id": lbId, "action": "unenrol"})})
+    .then(r => r.ok && r.json())
+    .then(t => setLpLbInfo(t))
 }
 
 export const getEligibleSus = (lbId: number) => {

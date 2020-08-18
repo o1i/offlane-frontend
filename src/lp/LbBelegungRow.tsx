@@ -29,9 +29,9 @@ const useStyles = makeStyles({
     }
 });
 
-export const LbBelegungRow = ({lbBelegung, getState, setState, setDialogUsers, setDialogLb, setDialogState}: 
+export const LbBelegungRow = ({lbBelegung, token, setState, setDialogUsers, setDialogLb, setDialogState}: 
     {lbBelegung: {lbInstance: LbInstance, sus: User[]}[], 
-    getState: {lbInstance: LbInstance, sus: User[]}[][], 
+    token: string, 
     setState: (enrolState: {lbInstance: LbInstance, sus: User[]}[][]) => void, 
     setDialogUsers: (suses: User[]) => void, 
     setDialogLb: (LbInstance: LbInstance) => void,
@@ -63,7 +63,7 @@ export const LbBelegungRow = ({lbBelegung, getState, setState, setDialogUsers, s
                             <ListItem key={id}>
                                 <ListItemText primary={name}/>
                                 <ListItemSecondaryAction>
-                                <IconButton edge="end" aria-label="delete" onClick={() => unEnrolSus(id, lbInstance.id, getState, setState)}>
+                                <IconButton edge="end" aria-label="delete" onClick={() => unEnrolSus(lbInstance.id, id, token, setState)}>
                                     <DeleteIcon />
                                 </IconButton>
                                 </ListItemSecondaryAction>

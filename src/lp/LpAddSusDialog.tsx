@@ -15,8 +15,8 @@ const useStyles = makeStyles({
     },
   });
 
-export const LpAddSusDialog = ({open, onClose, suses, lbInstance, getState, setState}: {open:boolean, onClose: () => void, suses: User[], lbInstance: LbInstance, 
-                                getState: {lbInstance: LbInstance, sus: User[]}[][], setState: (enrolState: {lbInstance: LbInstance, sus: User[]}[][]) => void}) => {
+export const LpAddSusDialog = ({open, onClose, suses, lbInstance, token, setState}: {open:boolean, onClose: () => void, suses: User[], lbInstance: LbInstance, 
+                                token: string, setState: (enrolState: {lbInstance: LbInstance, sus: User[]}[][]) => void}) => {
     
     const classes = useStyles();
 
@@ -26,7 +26,7 @@ export const LpAddSusDialog = ({open, onClose, suses, lbInstance, getState, setS
     }
 
     const handleListItemClick = (theSus: User) => {
-        enrolSus(lbInstance.id, theSus, getState, setState);
+        enrolSus(lbInstance.id, theSus.id, token, setState);
         onClose();
     }
 
