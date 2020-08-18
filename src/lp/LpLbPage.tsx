@@ -26,7 +26,7 @@ export const LpLbPage = ({token}: {token:string}) => {
     
     return (
       <>
-      <LpAddSusDialog open={dialogState} onClose={closeDialog} suses={dialogUsers} lbInstance={dialogLb} getState={lbState} setState={setLbState}/>
+      <LpAddSusDialog open={dialogState} onClose={closeDialog} suses={dialogUsers} lbInstance={dialogLb} token={token} setState={setLbState}/>
       {
         lbState.map((oneInstance)=> {
           return(
