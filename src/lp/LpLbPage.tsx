@@ -24,13 +24,16 @@ export const LpLbPage = ({token}: {token:string}) => {
 
     const closeDialog = () => setDialogState(false);
     
+    console.log("lbState:");
+    console.log(lbState);
+
     return (
       <>
       <LpAddSusDialog open={dialogState} onClose={closeDialog} suses={dialogUsers} lbInstance={dialogLb} token={token} setState={setLbState}/>
       {
-        lbState.map((oneInstance)=> {
+        lbState.map((oneInstance, key)=> {
           return(
-            <LbBelegungRow lbBelegung={oneInstance} token={token} setState={setLbState} key={oneInstance[0].lbInstance.id} setDialogUsers={setDialogUsers} setDialogLb={setDialogLb} setDialogState={setDialogState}/>
+            <LbBelegungRow lbBelegung={oneInstance} token={token} setState={setLbState} key={key} setDialogUsers={setDialogUsers} setDialogLb={setDialogLb} setDialogState={setDialogState}/>
           );
         })
       }

@@ -12,7 +12,7 @@ const useStyles = makeStyles({
   }
 });
 
-export const LpPage = (token: string) => {
+export const LpPage = ({token}: {token: string}) => {
   const classes = useStyles();
 
   const [tabState, setTabState] = useState(0)
