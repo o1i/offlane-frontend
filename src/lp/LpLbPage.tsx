@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import { getLpLbInfo } from "./lpApi";
 import { LbBelegungRow } from "./LbBelegungRow";
@@ -9,12 +9,14 @@ const useStyles = makeStyles({
   
 });
 
-export const LpLbPage = () => {
+export const LpLbPage = ({token}: {token:string}) => {
     const classes = useStyles();
-    const lp = 1;
-    const [lbState, setLbState] = useState(getLpLbInfo(lp) as {lbInstance: LbInstance, sus: User[]}[][])
-
     
+    const [lbState, setLbState] = useState([] as {lbInstance: LbInstance, sus: User[]}[][])
+
+    useEffect(()=>{
+      getLpLbInfo(token, setLbState);
+    }, [token]);
 
     const [dialogState, setDialogState] = useState(false);
     const [dialogUsers, setDialogUsers] = useState([] as User[]);

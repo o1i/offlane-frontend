@@ -23,9 +23,6 @@ const App = () => {
     const [token, setToken] = useState("")
     const [tabState, setTabState] = useState(0)
 
-    // Lp
-    const [lpInfo, setLpInfo] = useState({});
-
     const logOut = () => {setUserLevel("");}
 
     console.log(token);
@@ -39,7 +36,7 @@ const App = () => {
                 <SusPage token={token}/>
             }
             {userLevel === "lp" &&
-                <LpPage {...lpInfo} /> 
+                <LpPage token={token} /> 
             }
             {userLevel === "ap" &&
                 <ApPage/> 

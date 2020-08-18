@@ -12,7 +12,7 @@ const useStyles = makeStyles({
   }
 });
 
-export const LpPage = () => {
+export const LpPage = (token: string) => {
   const classes = useStyles();
 
   const [tabState, setTabState] = useState(0)
@@ -34,8 +34,8 @@ export const LpPage = () => {
                 <Tab label="SuS"/>
             </Tabs>
         </Paper>
-        {(tabState === 0) && <LpLbPage/>}
-        {(tabState === 1) && <LpSusPage/>}
+        {(tabState === 0) && <LpLbPage token={token}/>}
+        {(tabState === 1) && <LpSusPage token={token}/>}
     </>
   );
 }

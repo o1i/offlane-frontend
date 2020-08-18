@@ -5,7 +5,7 @@ const useStyles = makeStyles({
   
 });
 
-export const LpSusPage = () => {
+export const LpSusPage = ({token}: {token:String}) => {
   const classes = useStyles();
 
   const [susState, setSusState] = useState([])
