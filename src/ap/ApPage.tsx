@@ -12,7 +12,7 @@ const useStyles = makeStyles({
   }
 });
 
-export const ApPage = () => {
+export const ApPage = ({token}: {token: string}) => {
   const classes = useStyles();
 
   const [tabState, setTabState] = useState(0)
@@ -34,7 +34,7 @@ export const ApPage = () => {
                 <Tab label="Personen"/>
             </Tabs>
         </Paper>
-        {(tabState === 0) && <ApStundenplanPage/>}
+        {(tabState === 0) && <ApStundenplanPage token={token}/>}
         {(tabState === 1) && <ApPeoplePage/>}
     </>
   );

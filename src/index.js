@@ -39,7 +39,7 @@ const App = () => {
                 <LpPage token={token} /> 
             }
             {userLevel === "ap" &&
-                <ApPage/> 
+                <ApPage token={token}/> 
             }
         </UserContext.Provider>
     );

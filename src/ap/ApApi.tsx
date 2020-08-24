@@ -1,14 +1,25 @@
 import { Gruppe, Block, Lernbuero, User } from "../common/objects";
 
 // Gruppen
-export const getGruppen = () => {
-    return([]);
+export const getGruppen = (token: string, setter: (gruppen: Gruppe[]) => void) => {
+    const url = (process.env.NODE_ENV === 'production' ? process.env.REACT_APP_PROD_URL : process.env.REACT_APP_DEV_URL) + "ap/gruppe/"
+    fetch(url, {method: "get", headers: {'Content-Type': 'application/json', "Authorization": "Bearer " + token}})
+    .then(r => r.ok && r.json())
+    .then(t => setter(t))
 }
 
-export const addGruppe = (gruppen: Gruppe[], neu: string) => {
-    const prevMax = gruppen.length > 1 ? Math.max(...gruppen.map(g => g.id)) : 0;
-    gruppen.push({id: prevMax + 1, name: neu} as Gruppe)
-    return(gruppen)
+export const addGruppe = (token: string, setter: (gruppen: Gruppe[]) => void, neu: Array<Gruppe>) => {
+    const url = (process.env.NODE_ENV === 'production' ? process.env.REACT_APP_PROD_URL : process.env.REACT_APP_DEV_URL) + "ap/gruppe/"
+    fetch(url, {method: "post", headers: {'Content-Type': 'application/json', "Authorization": "Bearer " + token}, body: JSON.stringify(neu)})
+    .then(r => r.ok && r.json())
+    .then(t => setter(t))
+}
+
+export const deleteGruppe = (token: string, setter: (gruppen: Gruppe[]) => void, to_delete: Array<number>) => {
+    const url = (process.env.NODE_ENV === 'production' ? process.env.REACT_APP_PROD_URL : process.env.REACT_APP_DEV_URL) + "ap/gruppe/"
+    fetch(url, {method: "delete", headers: {'Content-Type': 'application/json', "Authorization": "Bearer " + token}, body: JSON.stringify(to_delete)})
+    .then(r => r.ok && r.json())
+    .then(t => setter(t))
 }
 
 //Blocks

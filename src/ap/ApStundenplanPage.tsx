@@ -12,7 +12,7 @@ import SaveIcon from '@material-ui/icons/Save';
 import DeleteIcon from '@material-ui/icons/Delete';
 import List from '@material-ui/core/List';
 import ListItem, { ListItemProps } from '@material-ui/core/ListItem';
-import { getGruppen, addGruppe, getBlocks, addBlock, changeBlock, getLbs } from "./ApApi";
+import { getGruppen, addGruppe, deleteGruppe, getBlocks, addBlock, changeBlock, getLbs } from "./ApApi";
 import { Stundenplan } from "./Stundenplan";
 import { Gruppe, Block, Lernbuero } from '../common/objects';
 import { ApLbList } from './ApLbList';
@@ -60,7 +60,7 @@ const useStyles = makeStyles((theme: Theme) =>
         },
 }));
 
-export const ApStundenplanPage = () => {
+export const ApStundenplanPage = ({token}: {token: string}) => {
     const classes = useStyles();
 
     // Gruppen
@@ -68,17 +68,16 @@ export const ApStundenplanPage = () => {
     const [gruppenName, setGruppenName] = useState("");
     const [selectedGroup, setSelectedGroup] = useState<Gruppe>({name: "none", id:-1} as Gruppe); 
 
-    useEffect(() => setGruppen(getGruppen()), [])
+    useEffect(() => getGruppen(token, setGruppen), [])
 
     const handleAddGruppe = () => {
         if(gruppenName){
-            setGruppen(addGruppe(gruppen, gruppenName));
+            addGruppe(token, setGruppen, [{"name": gruppenName, "id": -1}] as Gruppe[])};
             setGruppenName("");
-        }
     }
 
-    const handleDeleteGruppe = (id:number) => {
-        setGruppen(gruppen.filter(g => !(g.id === id)))
+    const handleDeleteGruppe = (token: string, setter: (gruppen: Array<Gruppe>) => void, id:number) => {
+        deleteGruppe(token, setter, [id])
         if(selectedGroup.id === id){
             setSelectedGroup({id: -1, name: ""})
         }
@@ -152,7 +151,7 @@ export const ApStundenplanPage = () => {
                         return(
                             <ListItem button key={g.id} onClick={(e) => setSelectedGroup(g)}>{g.name}
                                 <ListItemSecondaryAction>
-                                    <IconButton aria-label="Remove Gruppe" onClick={e => handleDeleteGruppe(g.id)}>
+                                    <IconButton aria-label="Remove Gruppe" onClick={e => handleDeleteGruppe(token, setGruppen, g.id)}>
                                         <DeleteIcon  fontSize="small"/>
                                     </IconButton>
                                 </ListItemSecondaryAction>
