@@ -92,7 +92,7 @@ export const ApStundenplanPage = ({token}: {token: string}) => {
     const [blockInputWeekDay, setBlockInputWeekDay] = useState(1);
 
 
-    useEffect(() => setBlocks(getBlocks()), [])
+    useEffect(() => getBlocks(token, setBlocks, gruppen.length > 0 ? gruppen[0].id : -1), [])
 
     const handleAddBlock = () => {
         setAddingBlock(true);
@@ -110,18 +110,22 @@ export const ApStundenplanPage = ({token}: {token: string}) => {
     const handleSaveBlock = () => {
         if(addingBlock){
             console.log("adding block");
-            setBlocks(addBlock(blockInputStart, blockInputEnd, blockInputWeekDay, blocks, selectedGroup));
+            addBlock(token, setBlocks, blockInputStart, blockInputEnd, blockInputWeekDay, selectedGroup);
             setChosenBlock(blocks.filter(b => (b.start === blockInputStart) && (b.gruppe.id === selectedGroup.id))[0]);
         }else{
             console.log("changing block");
-            setBlocks(changeBlock(blockInputStart, blockInputEnd, blockInputWeekDay, chosenBlock.id, blocks));
+            changeBlock(token, setBlocks, blockInputStart, blockInputEnd, blockInputWeekDay, chosenBlock.id);
         }
         console.log(blocks);
         setBlocksEditable(false);
         setAddingBlock(false);
     }
 
-    useEffect(() => setChosenBlock({} as Block), [selectedGroup])
+    useEffect(() => {
+        console.log("getting blocks");
+        getBlocks(token, setBlocks, selectedGroup.id);
+        setChosenBlock(blocks.length > 0 ? blocks[0] : {"id": -1} as Block);
+        console.log("Chosen Block:"); console.log(chosenBlock);}, [selectedGroup])
 
     //Lbs
     const [chosenBlock, setChosenBlock] = useState<Block>({} as Block);
@@ -221,13 +225,13 @@ export const ApStundenplanPage = ({token}: {token: string}) => {
                              <IconButton aria-label="Save Group" onClick={handleSaveBlock} disabled={!(addingBlock || blocksEditable)}>
                                 <SaveIcon fontSize="small"/>
                             </IconButton>:
-                            <IconButton aria-label="Edit Group" onClick={handleEditBlock} disabled={!(chosenBlock.id>0)}>
+                            <IconButton aria-label="Edit Group" onClick={handleEditBlock} disabled={chosenBlock && (chosenBlock.id>0)}>
                                  <EditIcon fontSize="small"/>
                             </IconButton>}
                         </Box>
                     </Typography>
                 </Grid>
-                <ApLbList lbs={lbs} block={chosenBlock} setLbs={setAllLbs}/>
+                {chosenBlock && <ApLbList lbs={lbs} block={chosenBlock} setLbs={setAllLbs}/>}
             </Grid>
         </Grid>
     );

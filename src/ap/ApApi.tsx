@@ -23,23 +23,36 @@ export const deleteGruppe = (token: string, setter: (gruppen: Gruppe[]) => void,
 }
 
 //Blocks
-export const getBlocks = () => {
-    return([]);
+export const getBlocks = (token: string, setter: (blocks: Block[]) => void, gruppe: number) => {
+    const url = (process.env.NODE_ENV === 'production' ? process.env.REACT_APP_PROD_URL : process.env.REACT_APP_DEV_URL) + "ap/block/"
+    fetch(url, {method: "post", headers: {'Content-Type': 'application/json', "Authorization": "Bearer " + token}, 
+    body: JSON.stringify([{"gruppe_get": gruppe}])})
+    .then(r => r.ok && r.json())
+    .then(t => {console.log("blocks");console.log(t); setter(t);})
 }
 
-export const addBlock = (start: string, end: string, weekDay: number, blocks: Block[], gruppe: Gruppe) => {
-    const oldMax = blocks.length > 0 ? Math.max(...blocks.map(b => b.id)): 0;
-    const newBlock = {weekDay: weekDay, start: start, end:end, gruppe: gruppe, id: oldMax + 1};
-    blocks.push(newBlock);
-    return(blocks);
+export const addBlock = (token: string, setter: (blocks: Block[]) => void, start: string, end: string, weekDay: number, gruppe: Gruppe) => {
+    const url = (process.env.NODE_ENV === 'production' ? process.env.REACT_APP_PROD_URL : process.env.REACT_APP_DEV_URL) + "ap/block/"
+    fetch(url, {method: "post", headers: {'Content-Type': 'application/json', "Authorization": "Bearer " + token}, 
+    body: JSON.stringify([{"start": start, "end": end, "weekDay": weekDay, "gruppe": gruppe}])})
+    .then(r => r.ok && r.json())
+    .then(t => setter(t))
 }
 
-export const changeBlock = (start: string, end: string, weekDay: number, id: number, blocks: Block[]) => {
-    const theIndex = blocks.findIndex(b => b.id === id)
-    blocks[theIndex]["start"] = start;
-    blocks[theIndex]["end"] = end;
-    blocks[theIndex]["weekDay"] = weekDay;
-    return blocks;
+export const changeBlock = (token: string, setter: (blocks: Block[]) => void, start: string, end: string, weekDay: number, id: number) => {
+    const url = (process.env.NODE_ENV === 'production' ? process.env.REACT_APP_PROD_URL : process.env.REACT_APP_DEV_URL) + "ap/block/"
+    fetch(url, {method: "post", headers: {'Content-Type': 'application/json', "Authorization": "Bearer " + token}, 
+    body: JSON.stringify([{"id": id, "start": start, "end": end, "weekDay": weekDay}])})
+    .then(r => r.ok && r.json())
+    .then(t => setter(t))
+}
+
+export const deleteBlock = (token: string, setter: (blocks: Block[]) => void, id: number) => {
+    const url = (process.env.NODE_ENV === 'production' ? process.env.REACT_APP_PROD_URL : process.env.REACT_APP_DEV_URL) + "ap/block/"
+    fetch(url, {method: "delete", headers: {'Content-Type': 'application/json', "Authorization": "Bearer " + token}, 
+    body: JSON.stringify([id])})
+    .then(r => r.ok && r.json())
+    .then(t => setter(t))
 }
 
 //Lbs
