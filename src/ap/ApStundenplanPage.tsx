@@ -112,7 +112,7 @@ export const ApStundenplanPage = ({token}: {token: string}) => {
             console.log("adding block");
             addBlock(token, blockInputStart, blockInputEnd, blockInputWeekDay, selectedGroup)
             .then(b => {setBlocks(b); console.log(b); return (b as Block[])})
-            .then(b => setChosenBlock(b.filter(bl => (bl.start === blockInputStart) && (bl.gruppe.id === selectedGroup.id))[0]));
+            .then(b => setChosenBlock(b.filter(bl => (bl.weekDay == blockInputWeekDay && bl.start === blockInputStart) && (bl.gruppe.id === selectedGroup.id))[0]));
         }else{
             console.log("changing block");
             changeBlock(token, setBlocks, blockInputStart, blockInputEnd, blockInputWeekDay, chosenBlock.id);
