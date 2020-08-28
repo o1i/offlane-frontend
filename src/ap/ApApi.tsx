@@ -31,12 +31,12 @@ export const getBlocks = (token: string, setter: (blocks: Block[]) => void, grup
     .then(t => {console.log("blocks");console.log(t); setter(t);})
 }
 
-export const addBlock = (token: string, setter: (blocks: Block[]) => void, start: string, end: string, weekDay: number, gruppe: Gruppe) => {
+export const addBlock = (token: string, start: string, end: string, weekDay: number, gruppe: Gruppe) => {
+    // returns promise (todo: do for all the other calls)
     const url = (process.env.NODE_ENV === 'production' ? process.env.REACT_APP_PROD_URL : process.env.REACT_APP_DEV_URL) + "ap/block/"
-    fetch(url, {method: "post", headers: {'Content-Type': 'application/json', "Authorization": "Bearer " + token}, 
-    body: JSON.stringify([{"start": start, "end": end, "weekDay": weekDay, "gruppe": gruppe}])})
-    .then(r => r.ok && r.json())
-    .then(t => setter(t))
+    return (fetch(url, {method: "post", headers: {'Content-Type': 'application/json', "Authorization": "Bearer " + token}, 
+    body: JSON.stringify([{"start": start, "end": end, "weekday": weekDay, "gruppe": gruppe}])})
+    .then(r => r.ok && r.json()))
 }
 
 export const changeBlock = (token: string, setter: (blocks: Block[]) => void, start: string, end: string, weekDay: number, id: number) => {

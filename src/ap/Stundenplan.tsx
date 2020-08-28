@@ -56,8 +56,6 @@ const BlockRep = ({block, cl, txt, setChosenBlock}: {block: Block, cl: string, t
     const classes = useStyles();
     const start = ((parseFloat(block.start.substring(0, 2)) - globalStart) + (parseFloat(block.start.substring(3, 5)) / 60)) / (globalEnd - globalStart)
     const end   = ((parseFloat(block.end.substring(0, 2)) - globalStart) + (parseFloat(block.end.substring(3, 5)) / 60)) / (globalEnd - globalStart)
-    console.log("blockrep");
-    console.log(block);
     return(
         <Box style={{top: Math.round(start * 100) + "%", height:  Math.round((end - start) * 100) + "%"}} className={cl} onClick={e => setChosenBlock(block)}>
             {txt}
@@ -68,9 +66,8 @@ const BlockRep = ({block, cl, txt, setChosenBlock}: {block: Block, cl: string, t
 
 export const Stundenplan = ({blocks, chosenBlock, setChosenBlock}: {blocks: Block[], chosenBlock: Block, setChosenBlock: (b: Block) => void}) => {
   const classes = useStyles();
-    console.log("blocks in stundenplan:")
-    console.log(blocks);
-
+  console.log("chosen block");
+  console.log(chosenBlock);
   return (
     <Grid container direction="row" alignItems="stretch" spacing={0} wrap="nowrap" className={classes.root}>
         <Grid item className={classes.timeSlot}>

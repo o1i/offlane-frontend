@@ -92,11 +92,11 @@ export const ApStundenplanPage = ({token}: {token: string}) => {
     const [blockInputWeekDay, setBlockInputWeekDay] = useState(1);
 
 
-    useEffect(() => getBlocks(token, setBlocks, gruppen.length > 0 ? gruppen[0].id : -1), [])
+    useEffect(() => {getBlocks(token, setBlocks, gruppen.length > 0 ? gruppen[0].id : -1); console.log("init"); console.log(blocks);}, [])
 
     const handleAddBlock = () => {
         setAddingBlock(true);
-        setChosenBlock({} as Block);
+        setChosenBlock({"id": -1} as Block);
         setBlocksEditable(true);
         setBlockInputStart("07:00");
         setBlockInputEnd("07:45")
@@ -110,8 +110,9 @@ export const ApStundenplanPage = ({token}: {token: string}) => {
     const handleSaveBlock = () => {
         if(addingBlock){
             console.log("adding block");
-            addBlock(token, setBlocks, blockInputStart, blockInputEnd, blockInputWeekDay, selectedGroup);
-            setChosenBlock(blocks.filter(b => (b.start === blockInputStart) && (b.gruppe.id === selectedGroup.id))[0]);
+            addBlock(token, blockInputStart, blockInputEnd, blockInputWeekDay, selectedGroup)
+            .then(b => {setBlocks(b); console.log(b); return (b as Block[])})
+            .then(b => setChosenBlock(b.filter(bl => (bl.start === blockInputStart) && (bl.gruppe.id === selectedGroup.id))[0]));
         }else{
             console.log("changing block");
             changeBlock(token, setBlocks, blockInputStart, blockInputEnd, blockInputWeekDay, chosenBlock.id);
@@ -125,7 +126,7 @@ export const ApStundenplanPage = ({token}: {token: string}) => {
         console.log("getting blocks");
         getBlocks(token, setBlocks, selectedGroup.id);
         setChosenBlock(blocks.length > 0 ? blocks[0] : {"id": -1} as Block);
-        console.log("Chosen Block:"); console.log(chosenBlock);}, [selectedGroup])
+    }, [selectedGroup])
 
     //Lbs
     const [chosenBlock, setChosenBlock] = useState<Block>({} as Block);
