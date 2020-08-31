@@ -28,7 +28,7 @@ export const getBlocks = (token: string, setter: (blocks: Block[]) => void, grup
     fetch(url, {method: "post", headers: {'Content-Type': 'application/json', "Authorization": "Bearer " + token}, 
     body: JSON.stringify([{"gruppe_get": gruppe}])})
     .then(r => r.ok && r.json())
-    .then(t => {console.log("blocks");console.log(t); setter(t);})
+    .then(t => setter(t))
 }
 
 export const addBlock = (token: string, start: string, end: string, weekDay: number, gruppe: Gruppe) => {
@@ -56,15 +56,36 @@ export const deleteBlock = (token: string, setter: (blocks: Block[]) => void, id
 }
 
 //Lbs
-export const getLbs = () => {
-    return([]);
+export const getLbs = (token: string, block_id: number) => {
+     // returns promise
+     console.log("getLbs");
+     console.log(block_id);
+     const url = (process.env.NODE_ENV === 'production' ? process.env.REACT_APP_PROD_URL : process.env.REACT_APP_DEV_URL) + "ap/lernbuero/"
+     return (fetch(url, {method: "post", headers: {'Content-Type': 'application/json', "Authorization": "Bearer " + token}, 
+     body: JSON.stringify({"block_id": block_id})})
+     .then(r => (r.ok && r.json())))
 }
 
-export const addLb = (newLb: Lernbuero, lbs: Lernbuero[]) => {
-    const oldMax = lbs.length > 0 ? Math.max(...lbs.map(lb => lb.id)) : 0;
-    newLb.id = oldMax + 1;
-    lbs.push(newLb);
-    return(lbs);
+export const addLb = (token: string, newLb: Lernbuero) => {
+     // returns promise
+     const url = (process.env.NODE_ENV === 'production' ? process.env.REACT_APP_PROD_URL : process.env.REACT_APP_DEV_URL) + "ap/lernbuero/"
+     return fetch(url, {method: "post", headers: {'Content-Type': 'application/json', "Authorization": "Bearer " + token}, 
+            body: JSON.stringify({
+         "id": newLb.id,
+         "name": newLb.name, 
+         "capacity": newLb.soft,
+         "lp_name": newLb.lehrer, 
+         "block": newLb.block,
+         "ort": newLb.ort})})
+         .then(r => r.ok ? r.json() as Promise<Lernbuero[]> : [] as Lernbuero[])
+}
+
+export const deleteLb = (token: string, id: number) => {
+    // returns promise
+    const url = (process.env.NODE_ENV === 'production' ? process.env.REACT_APP_PROD_URL : process.env.REACT_APP_DEV_URL) + "ap/lernbuero/"
+    return (fetch(url, {method: "delete", headers: {'Content-Type': 'application/json', "Authorization": "Bearer " + token}, 
+    body: JSON.stringify({"id": id})})
+    .then(r => r.ok && r.json()))
 }
 
 //Lps

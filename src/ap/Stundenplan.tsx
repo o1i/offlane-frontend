@@ -66,8 +66,6 @@ const BlockRep = ({block, cl, txt, setChosenBlock}: {block: Block, cl: string, t
 
 export const Stundenplan = ({blocks, chosenBlock, setChosenBlock}: {blocks: Block[], chosenBlock: Block, setChosenBlock: (b: Block) => void}) => {
   const classes = useStyles();
-  console.log("chosen block");
-  console.log(chosenBlock);
   return (
     <Grid container direction="row" alignItems="stretch" spacing={0} wrap="nowrap" className={classes.root}>
         <Grid item className={classes.timeSlot}>

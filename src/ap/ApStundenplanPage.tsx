@@ -92,7 +92,7 @@ export const ApStundenplanPage = ({token}: {token: string}) => {
     const [blockInputWeekDay, setBlockInputWeekDay] = useState(1);
 
 
-    useEffect(() => {getBlocks(token, setBlocks, gruppen.length > 0 ? gruppen[0].id : -1); console.log("init"); console.log(blocks);}, [])
+    useEffect(() => getBlocks(token, setBlocks, gruppen.length > 0 ? gruppen[0].id : -1), [])
 
     const handleAddBlock = () => {
         setAddingBlock(true);
@@ -109,35 +109,29 @@ export const ApStundenplanPage = ({token}: {token: string}) => {
 
     const handleSaveBlock = () => {
         if(addingBlock){
-            console.log("adding block");
             addBlock(token, blockInputStart, blockInputEnd, blockInputWeekDay, selectedGroup)
-            .then(b => {setBlocks(b); console.log(b); return (b as Block[])})
+            .then(b => {setBlocks(b); return (b as Block[])})
             .then(b => setChosenBlock(b.filter(bl => (bl.weekDay == blockInputWeekDay && bl.start === blockInputStart) && (bl.gruppe.id === selectedGroup.id))[0]));
         }else{
-            console.log("changing block");
             changeBlock(token, setBlocks, blockInputStart, blockInputEnd, blockInputWeekDay, chosenBlock.id);
         }
-        console.log(blocks);
         setBlocksEditable(false);
         setAddingBlock(false);
     }
 
     useEffect(() => {
-        console.log("getting blocks");
         getBlocks(token, setBlocks, selectedGroup.id);
         setChosenBlock(blocks.length > 0 ? blocks[0] : {"id": -1} as Block);
     }, [selectedGroup])
 
     //Lbs
     const [chosenBlock, setChosenBlock] = useState<Block>({} as Block);
-    const [allLbs, setAllLbs] = useState<Lernbuero[]>([]);
     const [lbs, setLbs] = useState<Lernbuero[]>([]);
     const [chosenLb, setChosenLb] = useState<Lernbuero>();
 
     //export interface Lernbuero {name: string, lehrer: string, ort: string, soft: number, hard: number, block: Block, id: number};
 
-    useEffect(() => setAllLbs(getLbs()), [])
-    useEffect(() => setLbs(allLbs.filter(x => x.block_id === chosenBlock.id)), [chosenBlock])
+    useEffect(() => {getLbs(token, chosenBlock.id).then(lbs => {setLbs(lbs); console.log("setChosenBlock"); console.log(lbs);});}, [chosenBlock])
 
     
     return (
@@ -192,7 +186,7 @@ export const ApStundenplanPage = ({token}: {token: string}) => {
                             <FormControl>
                                 <Select
                                     value={blockInputWeekDay}
-                                    onChange={(e: React.ChangeEvent<{ value: unknown }>) => {setBlockInputWeekDay(e.target.value as number); console.log(blockInputWeekDay);}}
+                                    onChange={(e: React.ChangeEvent<{ value: unknown }>) => setBlockInputWeekDay(e.target.value as number)}
                                     disabled={!blocksEditable}
                                     >
                                     <MenuItem value={1}>Mo</MenuItem>
@@ -232,7 +226,7 @@ export const ApStundenplanPage = ({token}: {token: string}) => {
                         </Box>
                     </Typography>
                 </Grid>
-                {chosenBlock && <ApLbList lbs={lbs} block={chosenBlock} setLbs={setAllLbs}/>}
+                {chosenBlock && <ApLbList token={token} lbs={lbs} block={chosenBlock} setLbs={setLbs}/>}
             </Grid>
         </Grid>
     );
