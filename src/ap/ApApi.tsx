@@ -89,48 +89,25 @@ export const deleteLb = (token: string, id: number) => {
 }
 
 //Lps
-export const getAllLps = () => {
-    return([
-        {name: "Böni", id:1, password:"foo", type: "lp"} as User,
-        {name: "Böni2", id:5, password:"foo2", type: "lp"} as User,
-        {name: "Böni3", id:21, password:"foo3", type: "lp"} as User,
-        {name: "Böni4", id:4, password:"foo4", type: "lp"} as User,
-        {name: "Böni5", id:2, password:"foo5", type: "lp"} as User,
-    ])
+export const getAllUsers = (token: string) => {
+     // returns promise
+     const url = (process.env.NODE_ENV === 'production' ? process.env.REACT_APP_PROD_URL : process.env.REACT_APP_DEV_URL) + "ap/user/"
+     return (fetch(url, {method: "get", headers: {'Content-Type': 'application/json', "Authorization": "Bearer " + token}})
+     .then(r => r.ok && r.json()))
 }
 
-export const addUser = (users: User[], oldUsers: User[], setUsers: (users: User[]) => void) =>{
-    const untouchedOld = oldUsers.filter(lp_old => users.map(lp_new=>lp_new.id).indexOf(lp_old.id) < 0);
-    let oldIdMax = Math.max(...oldUsers.map(lp => lp.id));
-    const usersWithId = users.map(u => {
-        if (u.id < 0){
-            oldIdMax += 1;
-            u.id = oldIdMax;
-            return(u);
-        }else{
-            return(u);
-        }
-    })
-    setUsers(untouchedOld.concat(usersWithId).sort(
-        (u, v) => {if (u.name.toLowerCase() > v.name.toLowerCase()){
-            return 1;
-        }else{
-            return -1;
-        }}));
+export const addUser = (token: string, users: User[]) =>{
+    // returns promise
+    const url = (process.env.NODE_ENV === 'production' ? process.env.REACT_APP_PROD_URL : process.env.REACT_APP_DEV_URL) + "ap/user/"
+    return (fetch(url, {method: "post", headers: {'Content-Type': 'application/json', "Authorization": "Bearer " + token}, 
+    body: JSON.stringify(users)})
+    .then(r => r.ok && r.json()))
 }
 
-//Sus
-export const getAllSus = () => {
-    return([
-        {name: "MiniBöni", id:1, password:"foo", type: "sus", gruppe:"2. Stufe"} as User,
-        {name: "MiniBöni2", id:5, password:"foo2", type: "sus", gruppe:"2. Stufe"} as User,
-        {name: "MiniBöni3", id:21, password:"foo3", type: "sus", gruppe:"2. Stufe"} as User,
-        {name: "MiniBöni4", id:4, password:"foo4", type: "sus", gruppe:"2. Stufe"} as User,
-        {name: "MiniBöni5", id:2, password:"foo5", type: "sus", gruppe:"2. Stufe"} as User,
-    ])
-}
-
-//user
-export const deleteUser = (user: User, old: User[], setter: (users: User[]) => void) => {
-    setter(old.filter(u => u.id != user.id));
+export const deleteUser = (token: string, ids:number[]) => {
+      // returns promise
+      const url = (process.env.NODE_ENV === 'production' ? process.env.REACT_APP_PROD_URL : process.env.REACT_APP_DEV_URL) + "ap/lernbuero/"
+      return (fetch(url, {method: "delete", headers: {'Content-Type': 'application/json', "Authorization": "Bearer " + token}, 
+      body: JSON.stringify(ids)})
+      .then(r => r.ok && r.json()))
 }
