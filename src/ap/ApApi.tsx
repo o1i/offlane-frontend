@@ -93,7 +93,11 @@ export const getAllUsers = (token: string) => {
      // returns promise
      const url = (process.env.NODE_ENV === 'production' ? process.env.REACT_APP_PROD_URL : process.env.REACT_APP_DEV_URL) + "ap/user/"
      return (fetch(url, {method: "get", headers: {'Content-Type': 'application/json', "Authorization": "Bearer " + token}})
-     .then(r => r.ok && r.json()))
+     .then(r => {
+        if(!r.ok){
+            throw new Error(r.statusText)
+        }
+        return r.json() as Promise<User[]>})) 
 }
 
 export const addUser = (token: string, users: User[]) =>{
@@ -101,7 +105,11 @@ export const addUser = (token: string, users: User[]) =>{
     const url = (process.env.NODE_ENV === 'production' ? process.env.REACT_APP_PROD_URL : process.env.REACT_APP_DEV_URL) + "ap/user/"
     return (fetch(url, {method: "post", headers: {'Content-Type': 'application/json', "Authorization": "Bearer " + token}, 
     body: JSON.stringify(users)})
-    .then(r => r.ok && r.json()))
+    .then(r => {
+        if(!r.ok){
+            throw new Error(r.statusText)
+        }
+        return r.json() as Promise<User[]>})) 
 }
 
 export const deleteUser = (token: string, ids:number[]) => {
@@ -109,5 +117,9 @@ export const deleteUser = (token: string, ids:number[]) => {
       const url = (process.env.NODE_ENV === 'production' ? process.env.REACT_APP_PROD_URL : process.env.REACT_APP_DEV_URL) + "ap/lernbuero/"
       return (fetch(url, {method: "delete", headers: {'Content-Type': 'application/json', "Authorization": "Bearer " + token}, 
       body: JSON.stringify(ids)})
-      .then(r => r.ok && r.json()))
+      .then(r => {
+        if(!r.ok){
+            throw new Error(r.statusText)
+        }
+        return r.json() as Promise<User[]>})) 
 }

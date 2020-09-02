@@ -21,7 +21,7 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import FilterListIcon from '@material-ui/icons/FilterList';
 import Grid from '@material-ui/core/Grid';
 import { User } from "../common/objects";
-import { getAllLps, getAllSus, addUser, deleteUser } from "./ApApi";
+import { getAllUsers, addUser, deleteUser } from "./ApApi";
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import { ListItemSecondaryAction } from '@material-ui/core';
@@ -76,8 +76,10 @@ const susFromLine = (line: string) => {
 }
  
 
-export const ApPeoplePage = () => {
+export const ApPeoplePage = ({token}: {token: string}) => {
   const classes = useStyles();
+
+  const [users, setUsers] = useState<User[]>([]);
   const [lps, setLps] = useState<User[]>([]);
   const [kuerzelState, setKuerzelState] = useState("");
   const [pwState, setPwState] = useState("");
@@ -92,8 +94,9 @@ export const ApPeoplePage = () => {
   const [susMultiKuerzelState, setSusMultiKuerzelState] = useState("");
   const [susId, setSusId] = useState(-1);
 
-  useEffect(() => setLps(getAllLps()), [])
-  useEffect(() => setSus(getAllSus()), [])
+  useEffect(() => {getAllUsers(token).then(users=>setUsers(users)).catch(e=>console.log(e));}, [])
+  useEffect(() => setLps(users.filter(u => u.type === "lp")), [users])
+  useEffect(() => setSus(users.filter(u => u.type === "sus")), [users])
 
   const handleLpUpdate = () => {
     let toAdd: User[] = [];
@@ -109,7 +112,10 @@ export const ApPeoplePage = () => {
       setMultiKuerzelState("");
     }
     if (toAdd.length > 0){
-      addUser(toAdd, lps, setLps);
+      addUser(token, toAdd).then(
+        returned => setUsers(returned)
+      ).catch(error => console.log(error));
+      
     }
   }
 
@@ -131,7 +137,7 @@ export const ApPeoplePage = () => {
       setSusMultiKuerzelState("");
     }
     if (toAdd.length > 0){
-      addUser(toAdd, sus, setSus);
+      addUser(token, toAdd).then(u => setUsers(u)).catch(e => console.log(e));
     }
   }
 
@@ -163,7 +169,7 @@ export const ApPeoplePage = () => {
                         primary={u.name} 
                         secondary={u.password}></ListItemText>
                       <ListItemSecondaryAction>
-                        <IconButton onClick={e => {deleteUser(u, lps, setLps); setKuerzelState(""); setPwState(""); setLpId(-1);}}><DeleteIcon/></IconButton>
+                        <IconButton onClick={e => {deleteUser(token, [u.id]).then(users => setUsers(users)).catch(e=>console.log(e)); setKuerzelState(""); setPwState(""); setLpId(-1);}}><DeleteIcon/></IconButton>
                       </ListItemSecondaryAction>
                     </ListItem>)}
             </List>
@@ -190,7 +196,7 @@ export const ApPeoplePage = () => {
                         secondary={u.gruppe + ", " + u.password}
                         />
                       <ListItemSecondaryAction>
-                        <IconButton onClick={e => {deleteUser(u, sus, setSus);setSusKuerzelState("");setSusGruppe("");setSusPwState(""); setSusId(-1);}}><DeleteIcon/></IconButton>
+                        <IconButton onClick={e => {deleteUser(token, [u.id]).then(users => setUsers(users)).catch(e=>console.log(e));setSusKuerzelState("");setSusGruppe("");setSusPwState(""); setSusId(-1);}}><DeleteIcon/></IconButton>
                       </ListItemSecondaryAction>
                     </ListItem>)}
             </List>

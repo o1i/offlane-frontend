@@ -35,7 +35,7 @@ export const ApPage = ({token}: {token: string}) => {
             </Tabs>
         </Paper>
         {(tabState === 0) && <ApStundenplanPage token={token}/>}
-        {(tabState === 1) && <ApPeoplePage/>}
+        {(tabState === 1) && <ApPeoplePage token={token}/>}
     </>
   );
 }
