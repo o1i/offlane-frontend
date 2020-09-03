@@ -23,7 +23,7 @@ export const LpPage = ({token}: {token: string}) => {
   
   return (
     <>
-        <Paper square className={classes.selectorTab}>
+{/*         <Paper square className={classes.selectorTab}>
             <Tabs
                 value={tabState}
                 indicatorColor="primary"
@@ -33,7 +33,7 @@ export const LpPage = ({token}: {token: string}) => {
                 <Tab label="Lernbüros"/>
                 <Tab label="SuS"/>
             </Tabs>
-        </Paper>
+        </Paper> */}
         {(tabState === 0) && <LpLbPage token={token}/>}
         {(tabState === 1) && <LpSusPage token={token}/>}
     </>
