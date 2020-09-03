@@ -155,6 +155,21 @@ export const ApPeoplePage = ({token}: {token: string}) => {
     setSusId(sus.id);
   }
 
+  const handleLpCancel = () => {
+    setKuerzelState("");
+    setPwState("");
+    setLpId(-1);
+    setMultiKuerzelState("");
+  }
+
+  const handleSusCancel = () => {
+    setSusKuerzelState("");
+    setSusGruppe("");
+    setSusPwState("");
+    setSusId(-1);
+    setSusMultiKuerzelState("");
+  }
+
   return(
     <Grid container spacing={3}>
       {/*LP Table*/}
@@ -181,6 +196,7 @@ export const ApPeoplePage = ({token}: {token: string}) => {
         <TextField label="Passwort" value={pwState} onChange={e => setPwState(e.target.value)}></TextField>
         <TextField label="Mehrere Erfassen" multiline rows={5} value={multiKuerzelState} onChange={e => setMultiKuerzelState(e.target.value)}></TextField>
         <Button variant={"contained"} onClick={handleLpUpdate}>Update LP(s)</Button>
+        <Button variant={"contained"} onClick={handleLpCancel}>Cancel</Button>
       </Grid>
 
     {/*SuS Table*/}
@@ -209,6 +225,7 @@ export const ApPeoplePage = ({token}: {token: string}) => {
         <TextField label="Passwort" value={susPwState} onChange={e => setSusPwState(e.target.value)}></TextField>
         <TextField label="Mehrere Erfassen" multiline rows={5} value={susMultiKuerzelState} onChange={e => setSusMultiKuerzelState(e.target.value)}></TextField>
         <Button variant={"contained"} onClick={handleSusUpdate}>Update SuS</Button>
+        <Button variant={"contained"} onClick={handleSusCancel}>Cancel</Button>
       </Grid>
     </Grid>
   )
