@@ -10,6 +10,7 @@ import { ListItemSecondaryAction, IconButton } from '@material-ui/core';
 import EditIcon from '@material-ui/icons/Edit';
 import SaveIcon from '@material-ui/icons/Save';
 import DeleteIcon from '@material-ui/icons/Delete';
+import ClearIcon from '@material-ui/icons/Clear';
 import List from '@material-ui/core/List';
 import ListItem, { ListItemProps } from '@material-ui/core/ListItem';
 import { getGruppen, addGruppe, deleteGruppe, getBlocks, addBlock, changeBlock, getLbs } from "./ApApi";
@@ -87,6 +88,7 @@ export const ApStundenplanPage = ({token}: {token: string}) => {
     const [blocks, setBlocks] = useState<Block[]>([]);
     const [blocksEditable, setBlocksEditable] = useState(false);
     const [addingBlock, setAddingBlock] = useState(false);
+    const [cancelAddBlock, setCancelAddBlock] = useState(false);
     const [blockInputStart, setBlockInputStart] = useState("");
     const [blockInputEnd, setBlockInputEnd] = useState("");
     const [blockInputWeekDay, setBlockInputWeekDay] = useState(1);
@@ -96,15 +98,26 @@ export const ApStundenplanPage = ({token}: {token: string}) => {
 
     const handleAddBlock = () => {
         setAddingBlock(true);
+        setCancelAddBlock(true);
         setChosenBlock({"id": -1} as Block);
         setBlocksEditable(true);
         setBlockInputStart("07:00");
         setBlockInputEnd("07:45")
     }
 
+    const handleCancelAddBlock = () =>{
+        setAddingBlock(false);
+        setCancelAddBlock(false);
+        setChosenBlock({"id": -1} as Block);
+        setBlocksEditable(false);
+        setBlockInputStart("");
+        setBlockInputEnd("")
+    }
+
     const handleEditBlock = () => {
         setAddingBlock(false);
         setBlocksEditable(true);
+        setCancelAddBlock(true);
     }
 
     const handleSaveBlock = () => {
@@ -117,6 +130,7 @@ export const ApStundenplanPage = ({token}: {token: string}) => {
         }
         setBlocksEditable(false);
         setAddingBlock(false);
+        setCancelAddBlock(false);
     }
 
     useEffect(() => {
@@ -213,14 +227,17 @@ export const ApStundenplanPage = ({token}: {token: string}) => {
                                 disabled={!blocksEditable}
                             />
 
-                            <IconButton aria-label="Add Group" onClick={handleAddBlock} disabled={!(selectedGroup.id>0)}>
+                            {!cancelAddBlock && <IconButton aria-label="Add Block" onClick={handleAddBlock} disabled={!(selectedGroup.id>0)}>
                                 <AddBoxIcon  fontSize="small"/>
-                            </IconButton>
+                            </IconButton>}
+                            {cancelAddBlock && <IconButton aria-label="Cancel adding/editing Block" onClick={handleCancelAddBlock}>
+                                <ClearIcon  fontSize="small"/>
+                                </IconButton>}
                             {blocksEditable ? 
-                             <IconButton aria-label="Save Group" onClick={handleSaveBlock} disabled={!(addingBlock || blocksEditable)}>
+                             <IconButton aria-label="Save Block" onClick={handleSaveBlock} disabled={!(addingBlock || blocksEditable)}>
                                 <SaveIcon fontSize="small"/>
                             </IconButton>:
-                            <IconButton aria-label="Edit Group" onClick={handleEditBlock} disabled={chosenBlock && (chosenBlock.id>0)}>
+                            <IconButton aria-label="Edit Block" onClick={handleEditBlock} disabled={chosenBlock && (chosenBlock.id>0)}>
                                  <EditIcon fontSize="small"/>
                             </IconButton>}
                         </Box>
