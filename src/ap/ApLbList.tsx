@@ -13,8 +13,12 @@ import ListItemText from '@material-ui/core/ListItemText';
 import ListSubheader from '@material-ui/core/ListSubheader';
 import TextField from '@material-ui/core/TextField';
 import { ListItemSecondaryAction, IconButton } from '@material-ui/core';
+import EditIcon from '@material-ui/icons/Edit';
 import AddBoxIcon from '@material-ui/icons/AddBox';
-import { addLb } from "./ApApi";
+import SaveIcon from '@material-ui/icons/Save';
+import DeleteIcon from '@material-ui/icons/Delete';
+import ClearIcon from '@material-ui/icons/Clear';
+import { addLb, deleteLb } from "./ApApi";
 
 
 const useStyles = makeStyles({
@@ -32,27 +36,64 @@ const useStyles = makeStyles({
   }
 });
 
-export const ApLbList = ({lbs, block, setLbs}: {lbs: Lernbuero[], block: Block, setLbs: (lbs: Lernbuero[]) => void}) => {
+export const ApLbList = ({token, lbs, block, setLbs}: {token: string, lbs: Lernbuero[], block: Block, setLbs: (lbs: Lernbuero[]) => void}) => {
   const classes = useStyles();
 
   const [lbName, setLbName] = useState("");
   const [lbLehrer, setLbLehrer] = useState("");
   const [lbOrt, setLbOrt] = useState("");
   const [lbSoft, setLbSoft] = useState(15);
+  const [lbId, setLbId] = useState(-1);
 //export interface Lernbuero {name: string, lehrer: string, ort: string, soft: number, hard: number, block: Block, id: number};
   const handleAddLernbuero = () => {
-    setLbs(addLb({name: lbName, lehrer: lbLehrer, ort: lbOrt, soft: lbSoft, hard: lbSoft + 5, block_id: block.id, id: -1} as Lernbuero, lbs));
+    addLb(token, {name: lbName, lehrer: lbLehrer, ort: lbOrt, soft: lbSoft, hard: lbSoft + 5, block_id: block.id, id: lbId, block: block} as Lernbuero)
+    .then(lbs => {console.log("addlernbuero"); setLbs(lbs);});
     setLbName("");
     setLbLehrer("");
     setLbOrt("");
-    setLbSoft(15);
+    setLbSoft(25);
+    setLbId(-1);
   }
-  
+
+  const handleClearSelection = () => {
+    setLbName("");
+    setLbLehrer("");
+    setLbOrt("");
+    setLbSoft(25);
+    setLbId(-1);
+  }
+
+
+  const handleDeleteLernbuero = (lb: Lernbuero) => {
+    deleteLb(token, lb.id)
+    .then(lbs => {console.log("addlernbuero"); setLbs(lbs);});
+    setLbName("");
+    setLbLehrer("");
+    setLbOrt("");
+    setLbId(-1);
+  }
+
+  const handleSelectLernbuero = (lb: Lernbuero) => {
+    setLbName(lb.name);
+    setLbLehrer(lb.lehrer);
+    setLbOrt(lb.ort);
+    setLbId(lb.id);
+    setLbSoft(lb.soft);
+  }
+
+  console.log("start aplblist");
+  console.log(lbs);
+
   return (
     <List>
       {lbs.map(lb => 
-        <ListItem button>
+        <ListItem button onClick={e => handleSelectLernbuero(lb)}>
             <ListItemText primary={lb.name} secondary={lb.lehrer + ", " + lb.ort + " (" + lb.soft + ")"}></ListItemText>
+            <ListItemSecondaryAction>
+              <IconButton aria-label="Edit Lernbuero" onClick={e => handleDeleteLernbuero(lb)}>
+                <DeleteIcon/>
+              </IconButton>
+            </ListItemSecondaryAction>
         </ListItem>
         )}
         <ListItem className={classes.addLb}>
@@ -64,8 +105,11 @@ export const ApLbList = ({lbs, block, setLbs}: {lbs: Lernbuero[], block: Block, 
             </span>
             }/>
             <ListItemSecondaryAction>
+              <IconButton aria-label="ClearSelection" onClick={handleClearSelection} disabled={!(block.id>0)}>
+                <ClearIcon/>
+              </IconButton>
               <IconButton aria-label="Add Lernbuero" onClick={handleAddLernbuero} disabled={!(block.id>0)}>
-                <AddBoxIcon/>
+                <SaveIcon/>
               </IconButton>
             </ListItemSecondaryAction>
         </ListItem>

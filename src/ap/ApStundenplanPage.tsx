@@ -92,11 +92,11 @@ export const ApStundenplanPage = ({token}: {token: string}) => {
     const [blockInputWeekDay, setBlockInputWeekDay] = useState(1);
 
 
-    useEffect(() => setBlocks(getBlocks()), [])
+    useEffect(() => getBlocks(token, setBlocks, gruppen.length > 0 ? gruppen[0].id : -1), [])
 
     const handleAddBlock = () => {
         setAddingBlock(true);
-        setChosenBlock({} as Block);
+        setChosenBlock({"id": -1} as Block);
         setBlocksEditable(true);
         setBlockInputStart("07:00");
         setBlockInputEnd("07:45")
@@ -109,30 +109,29 @@ export const ApStundenplanPage = ({token}: {token: string}) => {
 
     const handleSaveBlock = () => {
         if(addingBlock){
-            console.log("adding block");
-            setBlocks(addBlock(blockInputStart, blockInputEnd, blockInputWeekDay, blocks, selectedGroup));
-            setChosenBlock(blocks.filter(b => (b.start === blockInputStart) && (b.gruppe.id === selectedGroup.id))[0]);
+            addBlock(token, blockInputStart, blockInputEnd, blockInputWeekDay, selectedGroup)
+            .then(b => {setBlocks(b); return (b as Block[])})
+            .then(b => setChosenBlock(b.filter(bl => (bl.weekDay == blockInputWeekDay && bl.start === blockInputStart) && (bl.gruppe.id === selectedGroup.id))[0]));
         }else{
-            console.log("changing block");
-            setBlocks(changeBlock(blockInputStart, blockInputEnd, blockInputWeekDay, chosenBlock.id, blocks));
+            changeBlock(token, setBlocks, blockInputStart, blockInputEnd, blockInputWeekDay, chosenBlock.id);
         }
-        console.log(blocks);
         setBlocksEditable(false);
         setAddingBlock(false);
     }
 
-    useEffect(() => setChosenBlock({} as Block), [selectedGroup])
+    useEffect(() => {
+        getBlocks(token, setBlocks, selectedGroup.id);
+        setChosenBlock(blocks.length > 0 ? blocks[0] : {"id": -1} as Block);
+    }, [selectedGroup])
 
     //Lbs
     const [chosenBlock, setChosenBlock] = useState<Block>({} as Block);
-    const [allLbs, setAllLbs] = useState<Lernbuero[]>([]);
     const [lbs, setLbs] = useState<Lernbuero[]>([]);
     const [chosenLb, setChosenLb] = useState<Lernbuero>();
 
     //export interface Lernbuero {name: string, lehrer: string, ort: string, soft: number, hard: number, block: Block, id: number};
 
-    useEffect(() => setAllLbs(getLbs()), [])
-    useEffect(() => setLbs(allLbs.filter(x => x.block_id === chosenBlock.id)), [chosenBlock])
+    useEffect(() => {getLbs(token, chosenBlock.id).then(lbs => {setLbs(lbs); console.log("setChosenBlock"); console.log(lbs);});}, [chosenBlock])
 
     
     return (
@@ -187,7 +186,7 @@ export const ApStundenplanPage = ({token}: {token: string}) => {
                             <FormControl>
                                 <Select
                                     value={blockInputWeekDay}
-                                    onChange={(e: React.ChangeEvent<{ value: unknown }>) => {setBlockInputWeekDay(e.target.value as number); console.log(blockInputWeekDay);}}
+                                    onChange={(e: React.ChangeEvent<{ value: unknown }>) => setBlockInputWeekDay(e.target.value as number)}
                                     disabled={!blocksEditable}
                                     >
                                     <MenuItem value={1}>Mo</MenuItem>
@@ -221,13 +220,13 @@ export const ApStundenplanPage = ({token}: {token: string}) => {
                              <IconButton aria-label="Save Group" onClick={handleSaveBlock} disabled={!(addingBlock || blocksEditable)}>
                                 <SaveIcon fontSize="small"/>
                             </IconButton>:
-                            <IconButton aria-label="Edit Group" onClick={handleEditBlock} disabled={!(chosenBlock.id>0)}>
+                            <IconButton aria-label="Edit Group" onClick={handleEditBlock} disabled={chosenBlock && (chosenBlock.id>0)}>
                                  <EditIcon fontSize="small"/>
                             </IconButton>}
                         </Box>
                     </Typography>
                 </Grid>
-                <ApLbList lbs={lbs} block={chosenBlock} setLbs={setAllLbs}/>
+                {chosenBlock && <ApLbList token={token} lbs={lbs} block={chosenBlock} setLbs={setLbs}/>}
             </Grid>
         </Grid>
     );
