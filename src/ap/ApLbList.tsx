@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import Tabs from '@material-ui/core/Tabs';
@@ -18,7 +18,10 @@ import AddBoxIcon from '@material-ui/icons/AddBox';
 import SaveIcon from '@material-ui/icons/Save';
 import DeleteIcon from '@material-ui/icons/Delete';
 import ClearIcon from '@material-ui/icons/Clear';
-import { addLb, deleteLb } from "./ApApi";
+import { addLb, deleteLb, getAllLps } from "./ApApi";
+import MenuItem from '@material-ui/core/MenuItem';
+import FormControl from '@material-ui/core/FormControl';
+import Select from '@material-ui/core/Select';
 
 
 const useStyles = makeStyles({
@@ -33,6 +36,9 @@ const useStyles = makeStyles({
   },
   addLb: {
     maxWidth: 300,
+  },
+  lpDropdown: {
+
   }
 });
 
@@ -44,7 +50,12 @@ export const ApLbList = ({token, lbs, block, setLbs}: {token: string, lbs: Lernb
   const [lbOrt, setLbOrt] = useState("");
   const [lbSoft, setLbSoft] = useState(15);
   const [lbId, setLbId] = useState(-1);
-//export interface Lernbuero {name: string, lehrer: string, ort: string, soft: number, hard: number, block: Block, id: number};
+  const [allLps, setAllLps] = useState<string[]>([]);
+  
+
+  useEffect(() => {getAllLps(token).then(lps => setAllLps(lps))}, []);
+
+
   const handleAddLernbuero = () => {
     addLb(token, {name: lbName, lehrer: lbLehrer, ort: lbOrt, soft: lbSoft, hard: lbSoft + 5, block_id: block.id, id: lbId, block: block} as Lernbuero)
     .then(lbs => {console.log("addlernbuero"); setLbs(lbs);});
@@ -99,7 +110,18 @@ export const ApLbList = ({token, lbs, block, setLbs}: {token: string, lbs: Lernb
         <ListItem className={classes.addLb}>
           <ListItemText primary={<TextField placeholder="Name" value={lbName} onChange={e => setLbName(e.target.value)}/>} secondary={
             <span>
-            <TextField placeholder="Lehrpers." size="small" value={lbLehrer} onChange={e => setLbLehrer(e.target.value)} className={classes.newName}/>
+               <FormControl className={classes.lpDropdown}>
+                  <Select
+                    value={lbLehrer}
+                    onChange={e => setLbLehrer(e.target.value as string)}
+                  >
+                    <MenuItem value="">
+                      <em>LP Kürzel</em>
+                    </MenuItem>
+                    {allLps.map(lp => <MenuItem value={lp}>{lp}</MenuItem>)}
+                  </Select>
+                </FormControl>
+
             <TextField placeholder="Ort" size="small" value={lbOrt} onChange={e => setLbOrt(e.target.value)} className={classes.newName}/>
             <TextField placeholder="Max" size="small" value={lbSoft} onChange={e => setLbSoft(parseInt(e.target.value))} className={classes.newSoft}/>
             </span>

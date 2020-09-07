@@ -123,3 +123,15 @@ export const deleteUser = (token: string, ids:number[]) => {
         }
         return r.json() as Promise<User[]>})) 
 }
+
+export const getAllLps = (token: string) => {
+    // returns promise
+    const url = (process.env.NODE_ENV === 'production' ? process.env.REACT_APP_PROD_URL : process.env.REACT_APP_DEV_URL) + "ap/lp/"
+    return (fetch(url, {method: "get", headers: {'Content-Type': 'application/json', "Authorization": "Bearer " + token}})
+    .then(r => {
+      if(!r.ok){
+          console.log(r.statusText);
+          throw new Error(r.statusText);
+      }
+      return r.json() as Promise<string[]>})) 
+}
