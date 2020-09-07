@@ -20,14 +20,18 @@ import Switch from '@material-ui/core/Switch';
 import DeleteIcon from '@material-ui/icons/Delete';
 import FilterListIcon from '@material-ui/icons/FilterList';
 import Grid from '@material-ui/core/Grid';
-import { User } from "../common/objects";
-import { getAllUsers, addUser, deleteUser } from "./ApApi";
+import { User, Gruppe } from "../common/objects";
+import { getAllUsers, addUser, deleteUser, getGruppen } from "./ApApi";
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import { ListItemSecondaryAction } from '@material-ui/core';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
+import MenuItem from '@material-ui/core/MenuItem';
+import FormControl from '@material-ui/core/FormControl';
+import Select from '@material-ui/core/Select';
+import InputLabel from '@material-ui/core/InputLabel';
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -42,6 +46,9 @@ const useStyles = makeStyles((theme: Theme) =>
     userListSecondary: {
       display: "inline",
       paddingLeft: "10px",
+    },
+    susInputItem: {
+      width: "70%",
     },
   }));
 
@@ -94,6 +101,9 @@ export const ApPeoplePage = ({token}: {token: string}) => {
   const [susMultiKuerzelState, setSusMultiKuerzelState] = useState("");
   const [susId, setSusId] = useState(-1);
 
+  const [allGroups, setAllGroups] = useState<Gruppe[]>([]);
+
+  useEffect(() => {getGruppen(token, setAllGroups);}, [])
   useEffect(() => {getAllUsers(token).then(users=>setUsers(users)).catch(e=>console.log(e));}, [])
   useEffect(() => setLps(users.filter(u => u.type === "lp")), [users])
   useEffect(() => setSus(users.filter(u => u.type === "sus")), [users])
@@ -221,7 +231,17 @@ export const ApPeoplePage = ({token}: {token: string}) => {
       {/*SuS Input*/}
       <Grid md={2}>
         <TextField label="Name" required value={susKuerzelState} onChange={e => setSusKuerzelState(e.target.value)}></TextField>
-        <TextField label="Gruppe" required value={susGruppe} onChange={e => setSusGruppe(e.target.value)}></TextField>
+        <div>
+        <FormControl className={classes.susInputItem}>
+            <InputLabel id="demo-simple-select-label">Gruppe</InputLabel>
+            <Select
+                value={susGruppe}
+                onChange={e => setSusGruppe(e.target.value as string)}
+                >
+                {allGroups.map(gr => <MenuItem value={gr.name}>{gr.name}</MenuItem>)}
+            </Select>
+        </FormControl>
+        </div>
         <TextField label="Passwort" value={susPwState} onChange={e => setSusPwState(e.target.value)}></TextField>
         <TextField label="Mehrere Erfassen" multiline rows={5} value={susMultiKuerzelState} onChange={e => setSusMultiKuerzelState(e.target.value)}></TextField>
         <Button variant={"contained"} onClick={handleSusUpdate}>Update SuS</Button>

@@ -22,8 +22,6 @@ import { addLb, deleteLb, getAllLps } from "./ApApi";
 import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
-import InputLabel from '@material-ui/core/InputLabel';
-import { User } from "../common/objects";
 
 
 const useStyles = makeStyles({
@@ -123,8 +121,7 @@ export const ApLbList = ({token, lbs, block, setLbs}: {token: string, lbs: Lernb
                     {allLps.map(lp => <MenuItem value={lp}>{lp}</MenuItem>)}
                   </Select>
                 </FormControl>
-            {//<TextField placeholder="Lehrpers." size="small" value={lbLehrer} onChange={e => setLbLehrer(e.target.value)} className={classes.newName}/>
-            }
+
             <TextField placeholder="Ort" size="small" value={lbOrt} onChange={e => setLbOrt(e.target.value)} className={classes.newName}/>
             <TextField placeholder="Max" size="small" value={lbSoft} onChange={e => setLbSoft(parseInt(e.target.value))} className={classes.newSoft}/>
             </span>
