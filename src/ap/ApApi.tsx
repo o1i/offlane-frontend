@@ -66,7 +66,7 @@ export const getLbs = (token: string, block_id: number) => {
      .then(r => (r.ok && r.json())))
 }
 
-export const addLb = (token: string, newLb: Lernbuero) => {
+export const addLb = (token: string, changeAll: boolean, newLb: Lernbuero) => {
      // returns promise
      const url = (process.env.NODE_ENV === 'production' ? process.env.REACT_APP_PROD_URL : process.env.REACT_APP_DEV_URL) + "ap/lernbuero/"
      return fetch(url, {method: "post", headers: {'Content-Type': 'application/json', "Authorization": "Bearer " + token}, 
@@ -76,7 +76,8 @@ export const addLb = (token: string, newLb: Lernbuero) => {
          "capacity": newLb.soft,
          "lp_name": newLb.lehrer, 
          "block": newLb.block,
-         "ort": newLb.ort})})
+         "ort": newLb.ort,
+         "changeAll": changeAll})})
          .then(r => r.ok ? r.json() as Promise<Lernbuero[]> : [] as Lernbuero[])
 }
 
