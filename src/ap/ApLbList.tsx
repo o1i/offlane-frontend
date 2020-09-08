@@ -22,6 +22,10 @@ import { addLb, deleteLb, getAllLps } from "./ApApi";
 import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
+import FormGroup from '@material-ui/core/FormGroup';
+import CheckBoxIcon from '@material-ui/icons/CheckBox';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import Checkbox, { CheckboxProps } from '@material-ui/core/Checkbox';
 
 
 const useStyles = makeStyles({
@@ -51,13 +55,14 @@ export const ApLbList = ({token, lbs, block, setLbs}: {token: string, lbs: Lernb
   const [lbSoft, setLbSoft] = useState(15);
   const [lbId, setLbId] = useState(-1);
   const [allLps, setAllLps] = useState<string[]>([]);
+  const [changeAll, setChangeAll] = useState<boolean>(false);
   
 
   useEffect(() => {getAllLps(token).then(lps => setAllLps(lps))}, []);
 
 
   const handleAddLernbuero = () => {
-    addLb(token, {name: lbName, lehrer: lbLehrer, ort: lbOrt, soft: lbSoft, hard: lbSoft + 5, block_id: block.id, id: lbId, block: block} as Lernbuero)
+    addLb(token, changeAll, {name: lbName, lehrer: lbLehrer, ort: lbOrt, soft: lbSoft, hard: lbSoft + 5, block_id: block.id, id: lbId, block: block} as Lernbuero)
     .then(lbs => {console.log("addlernbuero"); setLbs(lbs);});
     setLbName("");
     setLbLehrer("");
@@ -124,6 +129,12 @@ export const ApLbList = ({token, lbs, block, setLbs}: {token: string, lbs: Lernb
 
             <TextField placeholder="Ort" size="small" value={lbOrt} onChange={e => setLbOrt(e.target.value)} className={classes.newName}/>
             <TextField placeholder="Max" size="small" value={lbSoft} onChange={e => setLbSoft(parseInt(e.target.value))} className={classes.newSoft}/>
+            <FormGroup>
+                <FormControlLabel
+                  control={<Checkbox checked={changeAll} onChange={e=> setChangeAll(e.target.checked)} name="changeAllBox" />}
+                  label="Alle ändern"
+                />
+                </FormGroup>
             </span>
             }/>
             <ListItemSecondaryAction>
