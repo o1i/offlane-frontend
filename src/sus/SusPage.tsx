@@ -38,17 +38,15 @@ export const SusPage = ({token}: {token: string}) => {
 
   const [dialogueOpen, setDialogueOpen] = useState(false);
   const [dialogueOptions, setDialogueOptions] = useState<LbInstance[]>([]);
+  const [currentLbi, setCurrentLbi] = useState<number>(-1);
 
   const handleDialogueClose = () =>{
     setDialogueOpen(false);
   }
-  const setOptionsAndOpen = (lbInstances: LbInstance[]) => {
-    setDialogueOptions(lbInstances);
-    setDialogueOpen(true);
-  }
 
   const getOptionsAndOpen = () =>  {
-    return ((kw_index: number, block_id: number) => {
+    return ((lbInstance_id: number, kw_index: number, block_id: number) => {
+      setCurrentLbi(lbInstance_id);
       getEnrolmentOptions(token, setDialogueOptions, kw_index, block_id);
       setDialogueOpen(true);
     })
@@ -76,7 +74,7 @@ export const SusPage = ({token}: {token: string}) => {
       </Grid>
       {slotRows.map((oneInstance, index) => 
       <OneSlot slotRow={oneInstance} optionSetter={getOptionsAndOpen()} key={index}/>)}
-      <LbSelectDialog open={dialogueOpen} token={token} onClose={handleDialogueClose} lbInstances={dialogueOptions} susInfoState={[susInfo, setSusInfo]}/>
+      <LbSelectDialog open={dialogueOpen} token={token} onClose={handleDialogueClose} lbInstances={dialogueOptions} currentLbiId={currentLbi} susInfoState={[susInfo, setSusInfo]}/>
     </>
   );
 }
