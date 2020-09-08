@@ -48,16 +48,16 @@ const useStyles = makeStyles({
   },
 });
 
-export const InstanceEnrolment = ({lbInstance, optionSetter}: {lbInstance: LbInstance, optionSetter: (kw_index: number, block_id: number) => void}) => {
+export const InstanceEnrolment = ({lbInstance, optionSetter}: {lbInstance: LbInstance, optionSetter: (lbInstance_id: number, kw_index: number, block_id: number) => void}) => {
   const classes = useStyles();
 
-  const {lb, status, start} = lbInstance;
+  const {lb, status, start, id} = lbInstance;
   const kw = getWeek(new Date(start * 1000));
 
   const locked = (status === "expired" || status === "forced") ? true : false;
 
   return (
-      <Paper className={`${classes.root} ${classes[status]}`} onClick={e => !locked && optionSetter(kw, lb.block_id)}>
+      <Paper className={`${classes.root} ${classes[status]}`} onClick={e => !locked && optionSetter(id, kw, lb.block_id)}>
           <div>
             <Typography className={classes.lock}><FontAwesomeIcon icon={locked ? faLock : faLockOpen} /></Typography>
           </div>

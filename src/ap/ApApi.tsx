@@ -114,7 +114,7 @@ export const addUser = (token: string, users: User[]) =>{
 
 export const deleteUser = (token: string, ids:number[]) => {
       // returns promise
-      const url = (process.env.NODE_ENV === 'production' ? process.env.REACT_APP_PROD_URL : process.env.REACT_APP_DEV_URL) + "ap/lernbuero/"
+      const url = (process.env.NODE_ENV === 'production' ? process.env.REACT_APP_PROD_URL : process.env.REACT_APP_DEV_URL) + "ap/user/"
       return (fetch(url, {method: "delete", headers: {'Content-Type': 'application/json', "Authorization": "Bearer " + token}, 
       body: JSON.stringify(ids)})
       .then(r => {
