@@ -211,7 +211,7 @@ export const ApPeoplePage = ({token}: {token: string}) => {
       </Grid>
 
     {/*SuS Table*/}
-    <Grid md={3} className={classes.theGrid}>
+    <Grid md={4} className={classes.theGrid}>
       <EnhancedTable rows={sus.map(s => {return({"name": s.name, "gruppe": s.gruppe, "lp": s.name, "pw": s.password})})}/>
  {/*            <Typography variant="h5">SuS</Typography>
             <List>
