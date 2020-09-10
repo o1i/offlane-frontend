@@ -21,6 +21,7 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import FilterListIcon from '@material-ui/icons/FilterList';
 import Grid from '@material-ui/core/Grid';
 import { User, Gruppe } from "../common/objects";
+import { EnhancedTable } from "./SusTable";
 import { getAllUsers, addUser, deleteUser, getGruppen } from "./ApApi";
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
@@ -211,7 +212,8 @@ export const ApPeoplePage = ({token}: {token: string}) => {
 
     {/*SuS Table*/}
     <Grid md={3} className={classes.theGrid}>
-            <Typography variant="h5">SuS</Typography>
+      <EnhancedTable rows={sus.map(s => {return({"name": s.name, "gruppe": s.gruppe, "lp": s.name, "pw": s.password})})}/>
+ {/*            <Typography variant="h5">SuS</Typography>
             <List>
                   {sus.map((u: User) => 
                     <ListItem button onClick={(e) => handleSusClick(u)}>
@@ -225,7 +227,7 @@ export const ApPeoplePage = ({token}: {token: string}) => {
                         <IconButton onClick={e => {deleteUser(token, [u.id]).then(users => setUsers(users)).catch(e=>console.log(e));setSusKuerzelState("");setSusGruppe("");setSusPwState(""); setSusId(-1);}}><DeleteIcon/></IconButton>
                       </ListItemSecondaryAction>
                     </ListItem>)}
-            </List>
+            </List> */}
         </Grid>
 
       {/*SuS Input*/}
