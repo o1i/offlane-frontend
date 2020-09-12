@@ -76,7 +76,7 @@ const lpFromLine = (line: string) => {
 const susFromLine = (line: string) => {
   const elements = line.split(/,| |\t|;/).filter(e => e);
   if(line.length > 0){
-    return({id: -1, type:"lp", name: elements[0], gruppe: elements[1], password: elements.length>2 ? elements[2] : makePw()} as User)
+    return({id: -1, type:"sus", name: elements[0], gruppe: elements[1], password: elements.length>2 ? elements[2] : makePw()} as User)
   }else{
     return({} as User)
   }
@@ -204,7 +204,7 @@ export const ApPeoplePage = ({token}: {token: string}) => {
       <Grid md={2}>
         <TextField label="Kürzel" required value={kuerzelState} onChange={e => setKuerzelState(e.target.value)}></TextField>
         <TextField label="Passwort" value={pwState} onChange={e => setPwState(e.target.value)}></TextField>
-        <TextField label="Mehrere Erfassen" multiline rows={5} value={multiKuerzelState} onChange={e => setMultiKuerzelState(e.target.value)}></TextField>
+        <TextField label="Mehrere Erfassen" multiline rows={5} placeholder="Name, PW" value={multiKuerzelState} onChange={e => setMultiKuerzelState(e.target.value)}></TextField>
         <Button variant={"contained"} onClick={handleLpUpdate}>Update LP(s)</Button>
         <Button variant={"contained"} onClick={handleLpCancel}>Cancel</Button>
       </Grid>
@@ -243,7 +243,7 @@ export const ApPeoplePage = ({token}: {token: string}) => {
         </FormControl>
         </div>
         <TextField label="Passwort" value={susPwState} onChange={e => setSusPwState(e.target.value)}></TextField>
-        <TextField label="Mehrere Erfassen" multiline rows={5} value={susMultiKuerzelState} onChange={e => setSusMultiKuerzelState(e.target.value)}></TextField>
+        <TextField label="Mehrere Erfassen" multiline placeholder="Name, Gruppe, PW" rows={5} value={susMultiKuerzelState} onChange={e => setSusMultiKuerzelState(e.target.value)}></TextField>
         <Button variant={"contained"} onClick={handleSusUpdate}>Update SuS</Button>
         <Button variant={"contained"} onClick={handleSusCancel}>Cancel</Button>
       </Grid>
