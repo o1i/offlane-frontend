@@ -57,7 +57,7 @@ export const SusPage = ({token}: {token: string}) => {
       block: block,
       lbInstances: susInfo.kws.map((kw) => (
         susInfo.lbInstances.find((lbInstance) => (getWeek(new Date(lbInstance.start * 1000)) === kw.index) && (lbInstance.lb.block_id === block.id)) || 
-        {lb: {name: "Unbelegt", lehrer: "", ort: "", block_id: block.id}, status: "open", id: -1, start: getStart(block.weekDay, block.start, kw.index)} as LbInstance
+        {lb: {name: "Unbelegt", lehrer: "", ort: "", block_id: block.id}, status: getStart(block.weekDay, block.start, kw.index) > Math.floor(Date.now() / 1000) ? "open" : "expired", id: -1, start: getStart(block.weekDay, block.start, kw.index)} as LbInstance
       ))
     }
   ))

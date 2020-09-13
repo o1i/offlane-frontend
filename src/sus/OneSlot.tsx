@@ -18,6 +18,8 @@ const useStyles = makeStyles({
 });
 
 export const OneSlot = ({slotRow, optionSetter}: {slotRow: SlotRow, optionSetter: (lbInstance_id: number, kw_index: number, block_id: number) => void}) => {
+  console.log("oneslot");
+  console.log(slotRow);
   const classes = useStyles();
 
   const {block, lbInstances} = slotRow;
