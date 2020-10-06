@@ -20,6 +20,7 @@ import { ApLbList } from './ApLbList';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
+import { Cancel } from '@material-ui/icons';
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -40,7 +41,7 @@ const useStyles = makeStyles((theme: Theme) =>
         },
         form: {
             "background-color": "#fff",
-            width: "80%"
+            width: "70%"
         },
         addPart: {
 
@@ -68,6 +69,7 @@ export const ApStundenplanPage = ({token}: {token: string}) => {
     const [gruppen, setGruppen] = useState<Gruppe[]>([]);
     const [gruppenName, setGruppenName] = useState("");
     const [selectedGroup, setSelectedGroup] = useState<Gruppe>({name: "none", id:-1} as Gruppe); 
+    const [groupEditMode, setGroupEditMode] = useState(false);
 
     useEffect(() => getGruppen(token, setGruppen), [])
 
@@ -75,6 +77,25 @@ export const ApStundenplanPage = ({token}: {token: string}) => {
         if(gruppenName){
             addGruppe(token, setGruppen, [{"name": gruppenName, "id": -1}] as Gruppe[])};
             setGruppenName("");
+    }
+
+    const gotoEditGruppe = (gruppe: Gruppe) => {
+        setGroupEditMode(true);
+        setSelectedGroup(gruppe);
+        setGruppenName(gruppe.name);
+    }
+
+    const handleEditGruppe = () => {
+        addGruppe(token, setGruppen, [{id: selectedGroup.id, name: gruppenName}])
+        setSelectedGroup({id: -1, name: ""});
+        setGruppenName("");
+        setGroupEditMode(false);
+    }
+
+    const handleCancelEditGruppe = () => {
+        setSelectedGroup({id: -1, name: ""});
+        setGruppenName("");
+        setGroupEditMode(false);
     }
 
     const handleDeleteGruppe = (token: string, setter: (gruppen: Array<Gruppe>) => void, id:number) => {
@@ -151,7 +172,7 @@ export const ApStundenplanPage = ({token}: {token: string}) => {
     return (
         <Grid container spacing={2} direction="row" justify="flex-start" align-items="flex-start" wrap="nowrap" className={classes.main}>
 
-            <Grid item container spacing={0} direction="column" md={2} className={classes.GruppenColumn}>
+            <Grid item container spacing={0} direction="column" md={3} className={classes.GruppenColumn}>
                 <Grid item >
                     <Typography>
                         <Box className={classes.spaltenTitel}>
@@ -162,8 +183,11 @@ export const ApStundenplanPage = ({token}: {token: string}) => {
                 <List>
                     {gruppen.map((g, key=g.id) => {
                         return(
-                            <ListItem button key={g.id} onClick={(e) => setSelectedGroup(g)}>{g.name}
+                            <ListItem button key={g.id} onClick={(e) => {setSelectedGroup(g); setGroupEditMode(false);}}>{g.name}
                                 <ListItemSecondaryAction>
+                                    <IconButton aria-label="Edit Gruppe" onClick={e => gotoEditGruppe(g)}>     
+                                        <EditIcon fontSize="small"/>
+                                    </IconButton>
                                     <IconButton aria-label="Remove Gruppe" onClick={e => handleDeleteGruppe(token, setGruppen, g.id)}>
                                         <DeleteIcon  fontSize="small"/>
                                     </IconButton>
@@ -176,9 +200,21 @@ export const ApStundenplanPage = ({token}: {token: string}) => {
                     <Box className={classes.addPart}>
                         <TextField required id="groupName" label="LB-Gruppenname" className={classes.form} color="secondary"
                         value={gruppenName} onChange={(e) => setGruppenName(e.target.value)}/>
+                        {groupEditMode ? 
+                        <>
+                        <IconButton aria-label="Cancel Edit" onClick={handleCancelEditGruppe}>
+                            <ClearIcon/>
+                        </IconButton>
+                        <IconButton aria-label="Persist Edit" onClick={handleEditGruppe}>
+                            <SaveIcon/>
+                        </IconButton>
+                        </>
+                        : 
                         <IconButton aria-label="Add Group" onClick={handleAddGruppe}>
                             <AddBoxIcon/>
                         </IconButton>
+                        
+                        }
                     </Box>
                 </Grid>
             </Grid>

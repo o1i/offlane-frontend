@@ -99,6 +99,8 @@ export const ApPeoplePage = ({token}: {token: string}) => {
   const [susKuerzelState, setSusKuerzelState] = useState("");
   const [susPwState, setSusPwState] = useState("");
   const [susGruppe, setSusGruppe] = useState("");
+  const [susLp, setSusLp] = useState("");
+  const [susLpId, setSusLpId] = useState(-1);
   const [susMultiKuerzelState, setSusMultiKuerzelState] = useState("");
   const [susId, setSusId] = useState(-1);
 
@@ -130,15 +132,24 @@ export const ApPeoplePage = ({token}: {token: string}) => {
     }
   }
 
+  const idOrDefault = (name: string|undefined) => {
+    if (name){
+      const lp = users.find(lp => lp.type =="lp" && lp.name==name)
+      if (lp) {
+        return(lp.id)
+      }
+    }
+    return(-1)
+  }
+
   const handleSusUpdate = () => {
     let toAdd: User[] = [];
     if(susKuerzelState){
-      console.log(susKuerzelState);
-      console.log(susPwState);
-      console.log(susGruppe);
       toAdd = toAdd.concat([{id: susId, type:"sus", name:susKuerzelState, password: susPwState ? susPwState : makePw(), gruppe: susGruppe}]);
       setSusKuerzelState("");
       setSusGruppe("");
+      setSusLp("");
+      setSusLpId(-1);
       setSusPwState("");
       setSusId(-1);
     }
@@ -148,6 +159,7 @@ export const ApPeoplePage = ({token}: {token: string}) => {
       setSusMultiKuerzelState("");
     }
     if (toAdd.length > 0){
+      const withLp = toAdd.map(u => ({...u, lp_id: idOrDefault(u.lp)}))  
       addUser(token, toAdd).then(u => setUsers(u)).catch(e => console.log(e));
     }
   }
@@ -162,6 +174,7 @@ export const ApPeoplePage = ({token}: {token: string}) => {
   const handleSusClick = (sus: User) =>{
     setSusKuerzelState(sus.name);
     setSusGruppe(sus.gruppe);
+    setSusGruppe(sus.lp || "");
     setSusPwState(sus.password);
     setSusId(sus.id);
   }
@@ -176,6 +189,8 @@ export const ApPeoplePage = ({token}: {token: string}) => {
   const handleSusCancel = () => {
     setSusKuerzelState("");
     setSusGruppe("");
+    setSusLp("");
+    setSusLpId(-1);
     setSusPwState("");
     setSusId(-1);
     setSusMultiKuerzelState("");
@@ -213,21 +228,6 @@ export const ApPeoplePage = ({token}: {token: string}) => {
     {/*SuS Table*/}
     <Grid md={4} className={classes.theGrid}>
       <EnhancedTable rows={sus.map(s => {return({"name": s.name, "gruppe": s.gruppe, "lp": s.name, "pw": s.password})})}/>
- {/*            <Typography variant="h5">SuS</Typography>
-            <List>
-                  {sus.map((u: User) => 
-                    <ListItem button onClick={(e) => handleSusClick(u)}>
-                      <ListItemText 
-                        classes={{primary: classes.userListPrimary, secondary: classes.userListSecondary}} 
-                        primaryTypographyProps={{color: "primary", variant:"subtitle2"}}
-                        primary={u.name}
-                        secondary={u.gruppe + ", " + u.password}
-                        />
-                      <ListItemSecondaryAction>
-                        <IconButton onClick={e => {deleteUser(token, [u.id]).then(users => setUsers(users)).catch(e=>console.log(e));setSusKuerzelState("");setSusGruppe("");setSusPwState(""); setSusId(-1);}}><DeleteIcon/></IconButton>
-                      </ListItemSecondaryAction>
-                    </ListItem>)}
-            </List> */}
         </Grid>
 
       {/*SuS Input*/}
@@ -235,7 +235,7 @@ export const ApPeoplePage = ({token}: {token: string}) => {
         <TextField label="Name" required value={susKuerzelState} onChange={e => setSusKuerzelState(e.target.value)}></TextField>
         <div>
         <FormControl className={classes.susInputItem}>
-            <InputLabel id="demo-simple-select-label">Gruppe</InputLabel>
+            <InputLabel id="sus-gruppe-select">Gruppe</InputLabel>
             <Select
                 value={susGruppe}
                 onChange={e => setSusGruppe(e.target.value as string)}
@@ -243,9 +243,18 @@ export const ApPeoplePage = ({token}: {token: string}) => {
                 {allGroups.map(gr => <MenuItem value={gr.name}>{gr.name}</MenuItem>)}
             </Select>
         </FormControl>
+        <FormControl className={classes.susInputItem}>
+            <InputLabel id="sus-lp-select">Lehrperson</InputLabel>
+            <Select
+                value={susLp}
+                onChange={e => setSusLp(e.target.value as string)}
+                >
+                {users.filter(u => u.type == "lp").map(lp => <MenuItem value={lp.name}>{lp.name}</MenuItem>)}
+            </Select>
+        </FormControl>
         </div>
         <TextField label="Passwort" value={susPwState} onChange={e => setSusPwState(e.target.value)}></TextField>
-        <TextField label="Mehrere Erfassen" multiline placeholder="Name, Gruppe, PW" rows={5} value={susMultiKuerzelState} onChange={e => setSusMultiKuerzelState(e.target.value)}></TextField>
+        <TextField label="Mehrere Erfassen" multiline placeholder="Name, Gruppe, LP, PW" rows={5} value={susMultiKuerzelState} onChange={e => setSusMultiKuerzelState(e.target.value)}></TextField>
         <Button variant={"contained"} onClick={handleSusUpdate}>Update SuS</Button>
         <Button variant={"contained"} onClick={handleSusCancel}>Cancel</Button>
       </Grid>
